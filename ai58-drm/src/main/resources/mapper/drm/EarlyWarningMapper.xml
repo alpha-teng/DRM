@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.EarlyWarningMapper">
+
+    <resultMap type="EarlyWarning" id="EarlyWarningResult">
+        <id     property="warningId"      column="warning_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="warnDate" column="warn_date" />
+        <result property="warnType" column="warn_type" />
+        <result property="warnLevel" column="warn_level" />
+        <result property="warnContent" column="warn_content" />
+        <result property="deptName" column="dept_name" />
+        <result property="handleStatus" column="handle_status" />
+        <result property="handleResult" column="handle_result" />
+        <result property="aiSuggestion" column="ai_suggestion" />
+    </resultMap>
+
+    <sql id="selectEarlyWarningVo">
+        select warning_id, warn_date, warn_type, warn_level, warn_content, dept_name, handle_status, handle_result, ai_suggestion, create_by, create_time, update_by, update_time, remark
+        from drm_early_warning
+    </sql>
+
+    <select id="selectEarlyWarning" parameterType="EarlyWarning" resultMap="EarlyWarningResult">
+        <include refid="selectEarlyWarningVo"/>
+        <where>
+            <if test="warningId != null">
+                and warning_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEarlyWarningList" parameterType="EarlyWarning" resultMap="EarlyWarningResult">
+        <include refid="selectEarlyWarningVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertEarlyWarning" parameterType="EarlyWarning">
+        insert into drm_early_warning (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateEarlyWarning" parameterType="EarlyWarning">
+        update drm_early_warning
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where warning_id = #{warningId}
+    </update>
+
+    <delete id="deleteEarlyWarningById" parameterType="Long">
+        delete from drm_early_warning where warning_id = #{warningId}
+    </delete>
+
+    <delete id="deleteEarlyWarningByIds" parameterType="Long">
+        delete from drm_early_warning where warning_id in
+        <foreach item="warningId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

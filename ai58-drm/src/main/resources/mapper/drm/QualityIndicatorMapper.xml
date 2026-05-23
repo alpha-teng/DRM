@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.QualityIndicatorMapper">
+
+    <resultMap type="QualityIndicator" id="QualityIndicatorResult">
+        <id     property="indicatorId"      column="indicator_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="indicatorDate" column="indicator_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="indicatorCode" column="indicator_code" />
+        <result property="indicatorName" column="indicator_name" />
+        <result property="indicatorValue" column="indicator_value" />
+        <result property="targetValue" column="target_value" />
+    </resultMap>
+
+    <sql id="selectQualityIndicatorVo">
+        select indicator_id, indicator_date, dept_name, indicator_code, indicator_name, indicator_value, target_value, create_by, create_time, update_by, update_time, remark
+        from drm_quality_indicator
+    </sql>
+
+    <select id="selectQualityIndicator" parameterType="QualityIndicator" resultMap="QualityIndicatorResult">
+        <include refid="selectQualityIndicatorVo"/>
+        <where>
+            <if test="indicatorId != null">
+                and indicator_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectQualityIndicatorList" parameterType="QualityIndicator" resultMap="QualityIndicatorResult">
+        <include refid="selectQualityIndicatorVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertQualityIndicator" parameterType="QualityIndicator">
+        insert into drm_quality_indicator (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateQualityIndicator" parameterType="QualityIndicator">
+        update drm_quality_indicator
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where indicator_id = #{indicatorId}
+    </update>
+
+    <delete id="deleteQualityIndicatorById" parameterType="Long">
+        delete from drm_quality_indicator where indicator_id = #{indicatorId}
+    </delete>
+
+    <delete id="deleteQualityIndicatorByIds" parameterType="Long">
+        delete from drm_quality_indicator where indicator_id in
+        <foreach item="indicatorId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

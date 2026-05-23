@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.IncomeMapper">
+
+    <resultMap type="Income" id="IncomeResult">
+        <id     property="incomeId"      column="income_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="incomeDate" column="income_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="incomeType" column="income_type" />
+        <result property="amount" column="amount" />
+    </resultMap>
+
+    <sql id="selectIncomeVo">
+        select income_id, income_date, dept_name, income_type, amount, create_by, create_time, update_by, update_time, remark
+        from drm_income
+    </sql>
+
+    <select id="selectIncome" parameterType="Income" resultMap="IncomeResult">
+        <include refid="selectIncomeVo"/>
+        <where>
+            <if test="incomeId != null">
+                and income_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIncomeList" parameterType="Income" resultMap="IncomeResult">
+        <include refid="selectIncomeVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertIncome" parameterType="Income">
+        insert into drm_income (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateIncome" parameterType="Income">
+        update drm_income
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where income_id = #{incomeId}
+    </update>
+
+    <delete id="deleteIncomeById" parameterType="Long">
+        delete from drm_income where income_id = #{incomeId}
+    </delete>
+
+    <delete id="deleteIncomeByIds" parameterType="Long">
+        delete from drm_income where income_id in
+        <foreach item="incomeId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

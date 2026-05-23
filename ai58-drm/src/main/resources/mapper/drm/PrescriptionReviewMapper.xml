@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.PrescriptionReviewMapper">
+
+    <resultMap type="PrescriptionReview" id="PrescriptionReviewResult">
+        <id     property="reviewId"      column="review_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="reviewDate" column="review_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="doctorName" column="doctor_name" />
+        <result property="prescriptionCnt" column="prescription_cnt" />
+        <result property="qualifiedCnt" column="qualified_cnt" />
+        <result property="unqualifiedReason" column="unqualified_reason" />
+    </resultMap>
+
+    <sql id="selectPrescriptionReviewVo">
+        select review_id, review_date, dept_name, doctor_name, prescription_cnt, qualified_cnt, unqualified_reason, create_by, create_time, update_by, update_time, remark
+        from drm_prescription_review
+    </sql>
+
+    <select id="selectPrescriptionReview" parameterType="PrescriptionReview" resultMap="PrescriptionReviewResult">
+        <include refid="selectPrescriptionReviewVo"/>
+        <where>
+            <if test="reviewId != null">
+                and review_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPrescriptionReviewList" parameterType="PrescriptionReview" resultMap="PrescriptionReviewResult">
+        <include refid="selectPrescriptionReviewVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertPrescriptionReview" parameterType="PrescriptionReview">
+        insert into drm_prescription_review (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updatePrescriptionReview" parameterType="PrescriptionReview">
+        update drm_prescription_review
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where review_id = #{reviewId}
+    </update>
+
+    <delete id="deletePrescriptionReviewById" parameterType="Long">
+        delete from drm_prescription_review where review_id = #{reviewId}
+    </delete>
+
+    <delete id="deletePrescriptionReviewByIds" parameterType="Long">
+        delete from drm_prescription_review where review_id in
+        <foreach item="reviewId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.DataMappingMapper">
+
+    <resultMap type="DataMapping" id="DataMappingResult">
+        <id     property="mappingId"      column="mapping_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="sourceTable" column="source_table" />
+        <result property="targetTable" column="target_table" />
+        <result property="mappingRules" column="mapping_rules" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <sql id="selectDataMappingVo">
+        select mapping_id, source_table, target_table, mapping_rules, status, create_by, create_time, update_by, update_time, remark
+        from drm_data_mapping
+    </sql>
+
+    <select id="selectDataMapping" parameterType="DataMapping" resultMap="DataMappingResult">
+        <include refid="selectDataMappingVo"/>
+        <where>
+            <if test="mappingId != null">
+                and mapping_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDataMappingList" parameterType="DataMapping" resultMap="DataMappingResult">
+        <include refid="selectDataMappingVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertDataMapping" parameterType="DataMapping">
+        insert into drm_data_mapping (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateDataMapping" parameterType="DataMapping">
+        update drm_data_mapping
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where mapping_id = #{mappingId}
+    </update>
+
+    <delete id="deleteDataMappingById" parameterType="Long">
+        delete from drm_data_mapping where mapping_id = #{mappingId}
+    </delete>
+
+    <delete id="deleteDataMappingByIds" parameterType="Long">
+        delete from drm_data_mapping where mapping_id in
+        <foreach item="mappingId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

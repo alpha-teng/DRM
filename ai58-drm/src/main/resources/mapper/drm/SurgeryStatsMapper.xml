@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.SurgeryStatsMapper">
+
+    <resultMap type="SurgeryStats" id="SurgeryStatsResult">
+        <id     property="statsId"      column="stats_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="statDate" column="stat_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="surgeryCnt" column="surgery_cnt" />
+        <result property="emergencyCnt" column="emergency_cnt" />
+        <result property="revenue" column="revenue" />
+    </resultMap>
+
+    <sql id="selectSurgeryStatsVo">
+        select stats_id, stat_date, dept_name, surgery_cnt, emergency_cnt, revenue, create_by, create_time, update_by, update_time, remark
+        from drm_surgery_stats
+    </sql>
+
+    <select id="selectSurgeryStats" parameterType="SurgeryStats" resultMap="SurgeryStatsResult">
+        <include refid="selectSurgeryStatsVo"/>
+        <where>
+            <if test="statsId != null">
+                and stats_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSurgeryStatsList" parameterType="SurgeryStats" resultMap="SurgeryStatsResult">
+        <include refid="selectSurgeryStatsVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSurgeryStats" parameterType="SurgeryStats">
+        insert into drm_surgery_stats (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateSurgeryStats" parameterType="SurgeryStats">
+        update drm_surgery_stats
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where stats_id = #{statsId}
+    </update>
+
+    <delete id="deleteSurgeryStatsById" parameterType="Long">
+        delete from drm_surgery_stats where stats_id = #{statsId}
+    </delete>
+
+    <delete id="deleteSurgeryStatsByIds" parameterType="Long">
+        delete from drm_surgery_stats where stats_id in
+        <foreach item="statsId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.KnowledgeCategoryMapper">
+
+    <resultMap type="KnowledgeCategory" id="KnowledgeCategoryResult">
+        <id     property="categoryId"      column="category_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="categoryName" column="category_name" />
+        <result property="parentId" column="parent_id" />
+        <result property="orderNum" column="order_num" />
+    </resultMap>
+
+    <sql id="selectKnowledgeCategoryVo">
+        select category_id, category_name, parent_id, order_num, create_by, create_time, update_by, update_time, remark
+        from drm_knowledge_category
+    </sql>
+
+    <select id="selectKnowledgeCategory" parameterType="KnowledgeCategory" resultMap="KnowledgeCategoryResult">
+        <include refid="selectKnowledgeCategoryVo"/>
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectKnowledgeCategoryList" parameterType="KnowledgeCategory" resultMap="KnowledgeCategoryResult">
+        <include refid="selectKnowledgeCategoryVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertKnowledgeCategory" parameterType="KnowledgeCategory">
+        insert into drm_knowledge_category (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateKnowledgeCategory" parameterType="KnowledgeCategory">
+        update drm_knowledge_category
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where category_id = #{categoryId}
+    </update>
+
+    <delete id="deleteKnowledgeCategoryById" parameterType="Long">
+        delete from drm_knowledge_category where category_id = #{categoryId}
+    </delete>
+
+    <delete id="deleteKnowledgeCategoryByIds" parameterType="Long">
+        delete from drm_knowledge_category where category_id in
+        <foreach item="categoryId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

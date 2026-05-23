@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.PerfResultMapper">
+
+    <resultMap type="PerfResult" id="PerfResultResult">
+        <id     property="resultId"      column="result_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="planId" column="plan_id" />
+        <result property="deptName" column="dept_name" />
+        <result property="doctorName" column="doctor_name" />
+        <result property="perfScore" column="perf_score" />
+        <result property="perfAmount" column="perf_amount" />
+        <result property="calcDate" column="calc_date" />
+    </resultMap>
+
+    <sql id="selectPerfResultVo">
+        select result_id, plan_id, dept_name, doctor_name, perf_score, perf_amount, calc_date, create_by, create_time, update_by, update_time, remark
+        from drm_perf_result
+    </sql>
+
+    <select id="selectPerfResult" parameterType="PerfResult" resultMap="PerfResultResult">
+        <include refid="selectPerfResultVo"/>
+        <where>
+            <if test="resultId != null">
+                and result_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPerfResultList" parameterType="PerfResult" resultMap="PerfResultResult">
+        <include refid="selectPerfResultVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertPerfResult" parameterType="PerfResult">
+        insert into drm_perf_result (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updatePerfResult" parameterType="PerfResult">
+        update drm_perf_result
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where result_id = #{resultId}
+    </update>
+
+    <delete id="deletePerfResultById" parameterType="Long">
+        delete from drm_perf_result where result_id = #{resultId}
+    </delete>
+
+    <delete id="deletePerfResultByIds" parameterType="Long">
+        delete from drm_perf_result where result_id in
+        <foreach item="resultId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

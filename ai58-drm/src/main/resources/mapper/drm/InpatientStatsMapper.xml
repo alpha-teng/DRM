@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.InpatientStatsMapper">
+
+    <resultMap type="InpatientStats" id="InpatientStatsResult">
+        <id     property="statsId"      column="stats_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="statDate" column="stat_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="inCnt" column="in_cnt" />
+        <result property="outCnt" column="out_cnt" />
+        <result property="bedOccupyCnt" column="bed_occupy_cnt" />
+        <result property="bedOccupyRate" column="bed_occupy_rate" />
+        <result property="avgStayDays" column="avg_stay_days" />
+        <result property="revenue" column="revenue" />
+    </resultMap>
+
+    <sql id="selectInpatientStatsVo">
+        select stats_id, stat_date, dept_name, in_cnt, out_cnt, bed_occupy_cnt, bed_occupy_rate, avg_stay_days, revenue, create_by, create_time, update_by, update_time, remark
+        from drm_inpatient_stats
+    </sql>
+
+    <select id="selectInpatientStats" parameterType="InpatientStats" resultMap="InpatientStatsResult">
+        <include refid="selectInpatientStatsVo"/>
+        <where>
+            <if test="statsId != null">
+                and stats_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectInpatientStatsList" parameterType="InpatientStats" resultMap="InpatientStatsResult">
+        <include refid="selectInpatientStatsVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertInpatientStats" parameterType="InpatientStats">
+        insert into drm_inpatient_stats (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateInpatientStats" parameterType="InpatientStats">
+        update drm_inpatient_stats
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where stats_id = #{statsId}
+    </update>
+
+    <delete id="deleteInpatientStatsById" parameterType="Long">
+        delete from drm_inpatient_stats where stats_id = #{statsId}
+    </delete>
+
+    <delete id="deleteInpatientStatsByIds" parameterType="Long">
+        delete from drm_inpatient_stats where stats_id in
+        <foreach item="statsId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.ExpenseMapper">
+
+    <resultMap type="Expense" id="ExpenseResult">
+        <id     property="expenseId"      column="expense_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="expenseDate" column="expense_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="expenseType" column="expense_type" />
+        <result property="amount" column="amount" />
+    </resultMap>
+
+    <sql id="selectExpenseVo">
+        select expense_id, expense_date, dept_name, expense_type, amount, create_by, create_time, update_by, update_time, remark
+        from drm_expense
+    </sql>
+
+    <select id="selectExpense" parameterType="Expense" resultMap="ExpenseResult">
+        <include refid="selectExpenseVo"/>
+        <where>
+            <if test="expenseId != null">
+                and expense_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectExpenseList" parameterType="Expense" resultMap="ExpenseResult">
+        <include refid="selectExpenseVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertExpense" parameterType="Expense">
+        insert into drm_expense (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateExpense" parameterType="Expense">
+        update drm_expense
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where expense_id = #{expenseId}
+    </update>
+
+    <delete id="deleteExpenseById" parameterType="Long">
+        delete from drm_expense where expense_id = #{expenseId}
+    </delete>
+
+    <delete id="deleteExpenseByIds" parameterType="Long">
+        delete from drm_expense where expense_id in
+        <foreach item="expenseId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

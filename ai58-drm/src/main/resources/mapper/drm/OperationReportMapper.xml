@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.OperationReportMapper">
+
+    <resultMap type="OperationReport" id="OperationReportResult">
+        <id     property="reportId"      column="report_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="reportType" column="report_type" />
+        <result property="periodType" column="period_type" />
+        <result property="reportTitle" column="report_title" />
+        <result property="reportContent" column="report_content" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <sql id="selectOperationReportVo">
+        select report_id, report_type, period_type, report_title, report_content, status, create_by, create_time, update_by, update_time, remark
+        from drm_operation_report
+    </sql>
+
+    <select id="selectOperationReport" parameterType="OperationReport" resultMap="OperationReportResult">
+        <include refid="selectOperationReportVo"/>
+        <where>
+            <if test="reportId != null">
+                and report_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOperationReportList" parameterType="OperationReport" resultMap="OperationReportResult">
+        <include refid="selectOperationReportVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOperationReport" parameterType="OperationReport">
+        insert into drm_operation_report (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateOperationReport" parameterType="OperationReport">
+        update drm_operation_report
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteOperationReportById" parameterType="Long">
+        delete from drm_operation_report where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteOperationReportByIds" parameterType="Long">
+        delete from drm_operation_report where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

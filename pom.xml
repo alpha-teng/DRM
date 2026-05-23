@@ -10,7 +10,7 @@
 
     <name>ai58</name>
     <url>http://contract.ai58.com</url>
-    <description>园区智慧招商平台</description>
+    <description>医院运营决策分析系统（DRM）</description>
 
     <properties>
 
@@ -161,6 +161,7 @@
         <module>ai58-generator</module>
         <module>ai58-common</module>
         <module>ai58-park</module>
+        <module>ai58-drm</module>
     </modules>
     <packaging>pom</packaging>
 

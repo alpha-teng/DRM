@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.ReceivableMapper">
+
+    <resultMap type="Receivable" id="ReceivableResult">
+        <id     property="receivableId"      column="receivable_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="patientName" column="patient_name" />
+        <result property="deptName" column="dept_name" />
+        <result property="billDate" column="bill_date" />
+        <result property="amount" column="amount" />
+        <result property="paidAmount" column="paid_amount" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <sql id="selectReceivableVo">
+        select receivable_id, patient_name, dept_name, bill_date, amount, paid_amount, status, create_by, create_time, update_by, update_time, remark
+        from drm_receivable
+    </sql>
+
+    <select id="selectReceivable" parameterType="Receivable" resultMap="ReceivableResult">
+        <include refid="selectReceivableVo"/>
+        <where>
+            <if test="receivableId != null">
+                and receivable_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectReceivableList" parameterType="Receivable" resultMap="ReceivableResult">
+        <include refid="selectReceivableVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertReceivable" parameterType="Receivable">
+        insert into drm_receivable (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateReceivable" parameterType="Receivable">
+        update drm_receivable
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where receivable_id = #{receivableId}
+    </update>
+
+    <delete id="deleteReceivableById" parameterType="Long">
+        delete from drm_receivable where receivable_id = #{receivableId}
+    </delete>
+
+    <delete id="deleteReceivableByIds" parameterType="Long">
+        delete from drm_receivable where receivable_id in
+        <foreach item="receivableId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

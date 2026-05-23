@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.KnowledgeContentMapper">
+
+    <resultMap type="KnowledgeContent" id="KnowledgeContentResult">
+        <id     property="contentId"      column="content_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="categoryId" column="category_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="author" column="author" />
+        <result property="viewCount" column="view_count" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <sql id="selectKnowledgeContentVo">
+        select content_id, category_id, title, content, author, view_count, status, create_by, create_time, update_by, update_time, remark
+        from drm_knowledge_content
+    </sql>
+
+    <select id="selectKnowledgeContent" parameterType="KnowledgeContent" resultMap="KnowledgeContentResult">
+        <include refid="selectKnowledgeContentVo"/>
+        <where>
+            <if test="contentId != null">
+                and content_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectKnowledgeContentList" parameterType="KnowledgeContent" resultMap="KnowledgeContentResult">
+        <include refid="selectKnowledgeContentVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertKnowledgeContent" parameterType="KnowledgeContent">
+        insert into drm_knowledge_content (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateKnowledgeContent" parameterType="KnowledgeContent">
+        update drm_knowledge_content
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where content_id = #{contentId}
+    </update>
+
+    <delete id="deleteKnowledgeContentById" parameterType="Long">
+        delete from drm_knowledge_content where content_id = #{contentId}
+    </delete>
+
+    <delete id="deleteKnowledgeContentByIds" parameterType="Long">
+        delete from drm_knowledge_content where content_id in
+        <foreach item="contentId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

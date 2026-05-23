@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.CostAllocationMapper">
+
+    <resultMap type="CostAllocation" id="CostAllocationResult">
+        <id     property="allocationId"      column="allocation_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="period" column="period" />
+        <result property="level" column="level" />
+        <result property="deptName" column="dept_name" />
+        <result property="directCost" column="direct_cost" />
+        <result property="indirectCost" column="indirect_cost" />
+        <result property="totalCost" column="total_cost" />
+    </resultMap>
+
+    <sql id="selectCostAllocationVo">
+        select allocation_id, period, level, dept_name, direct_cost, indirect_cost, total_cost, create_by, create_time, update_by, update_time, remark
+        from drm_cost_allocation
+    </sql>
+
+    <select id="selectCostAllocation" parameterType="CostAllocation" resultMap="CostAllocationResult">
+        <include refid="selectCostAllocationVo"/>
+        <where>
+            <if test="allocationId != null">
+                and allocation_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCostAllocationList" parameterType="CostAllocation" resultMap="CostAllocationResult">
+        <include refid="selectCostAllocationVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertCostAllocation" parameterType="CostAllocation">
+        insert into drm_cost_allocation (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateCostAllocation" parameterType="CostAllocation">
+        update drm_cost_allocation
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where allocation_id = #{allocationId}
+    </update>
+
+    <delete id="deleteCostAllocationById" parameterType="Long">
+        delete from drm_cost_allocation where allocation_id = #{allocationId}
+    </delete>
+
+    <delete id="deleteCostAllocationByIds" parameterType="Long">
+        delete from drm_cost_allocation where allocation_id in
+        <foreach item="allocationId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

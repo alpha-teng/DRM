@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.QualityEventMapper">
+
+    <resultMap type="QualityEvent" id="QualityEventResult">
+        <id     property="eventId"      column="event_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="eventDate" column="event_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="eventType" column="event_type" />
+        <result property="eventLevel" column="event_level" />
+        <result property="eventDesc" column="event_desc" />
+        <result property="handlingStatus" column="handling_status" />
+    </resultMap>
+
+    <sql id="selectQualityEventVo">
+        select event_id, event_date, dept_name, event_type, event_level, event_desc, handling_status, create_by, create_time, update_by, update_time, remark
+        from drm_quality_event
+    </sql>
+
+    <select id="selectQualityEvent" parameterType="QualityEvent" resultMap="QualityEventResult">
+        <include refid="selectQualityEventVo"/>
+        <where>
+            <if test="eventId != null">
+                and event_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectQualityEventList" parameterType="QualityEvent" resultMap="QualityEventResult">
+        <include refid="selectQualityEventVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertQualityEvent" parameterType="QualityEvent">
+        insert into drm_quality_event (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateQualityEvent" parameterType="QualityEvent">
+        update drm_quality_event
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where event_id = #{eventId}
+    </update>
+
+    <delete id="deleteQualityEventById" parameterType="Long">
+        delete from drm_quality_event where event_id = #{eventId}
+    </delete>
+
+    <delete id="deleteQualityEventByIds" parameterType="Long">
+        delete from drm_quality_event where event_id in
+        <foreach item="eventId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

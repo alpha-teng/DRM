@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.AiChatLogMapper">
+
+    <resultMap type="AiChatLog" id="AiChatLogResult">
+        <id     property="logId"      column="log_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="question" column="question" />
+        <result property="answer" column="answer" />
+        <result property="deptName" column="dept_name" />
+        <result property="userId" column="user_id" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="selectAiChatLogVo">
+        select log_id, question, answer, dept_name, user_id, create_time, create_by, create_time, update_by, update_time, remark
+        from drm_ai_chat_log
+    </sql>
+
+    <select id="selectAiChatLog" parameterType="AiChatLog" resultMap="AiChatLogResult">
+        <include refid="selectAiChatLogVo"/>
+        <where>
+            <if test="logId != null">
+                and log_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAiChatLogList" parameterType="AiChatLog" resultMap="AiChatLogResult">
+        <include refid="selectAiChatLogVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertAiChatLog" parameterType="AiChatLog">
+        insert into drm_ai_chat_log (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateAiChatLog" parameterType="AiChatLog">
+        update drm_ai_chat_log
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where log_id = #{logId}
+    </update>
+
+    <delete id="deleteAiChatLogById" parameterType="Long">
+        delete from drm_ai_chat_log where log_id = #{logId}
+    </delete>
+
+    <delete id="deleteAiChatLogByIds" parameterType="Long">
+        delete from drm_ai_chat_log where log_id in
+        <foreach item="logId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.CostDataMapper">
+
+    <resultMap type="CostData" id="CostDataResult">
+        <id     property="costId"      column="cost_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="costDate" column="cost_date" />
+        <result property="deptName" column="dept_name" />
+        <result property="costType" column="cost_type" />
+        <result property="amount" column="amount" />
+    </resultMap>
+
+    <sql id="selectCostDataVo">
+        select cost_id, cost_date, dept_name, cost_type, amount, create_by, create_time, update_by, update_time, remark
+        from drm_cost_data
+    </sql>
+
+    <select id="selectCostData" parameterType="CostData" resultMap="CostDataResult">
+        <include refid="selectCostDataVo"/>
+        <where>
+            <if test="costId != null">
+                and cost_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCostDataList" parameterType="CostData" resultMap="CostDataResult">
+        <include refid="selectCostDataVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertCostData" parameterType="CostData">
+        insert into drm_cost_data (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateCostData" parameterType="CostData">
+        update drm_cost_data
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where cost_id = #{costId}
+    </update>
+
+    <delete id="deleteCostDataById" parameterType="Long">
+        delete from drm_cost_data where cost_id = #{costId}
+    </delete>
+
+    <delete id="deleteCostDataByIds" parameterType="Long">
+        delete from drm_cost_data where cost_id in
+        <foreach item="costId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>

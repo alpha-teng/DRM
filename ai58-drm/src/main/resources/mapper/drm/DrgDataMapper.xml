@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.DrgDataMapper">
+
+    <resultMap type="DrgData" id="DrgDataResult">
+        <id     property="drgId"      column="drg_id"      />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="statDate" column="stat_date" />
+        <result property="drgCode" column="drg_code" />
+        <result property="drgName" column="drg_name" />
+        <result property="caseCnt" column="case_cnt" />
+        <result property="avgCost" column="avg_cost" />
+        <result property="avgDays" column="avg_days" />
+        <result property="cmi" column="cmi" />
+        <result property="surplusAmount" column="surplus_amount" />
+    </resultMap>
+
+    <sql id="selectDrgDataVo">
+        select drg_id, stat_date, drg_code, drg_name, case_cnt, avg_cost, avg_days, cmi, surplus_amount, create_by, create_time, update_by, update_time, remark
+        from drm_drg_data
+    </sql>
+
+    <select id="selectDrgData" parameterType="DrgData" resultMap="DrgDataResult">
+        <include refid="selectDrgDataVo"/>
+        <where>
+            <if test="drgId != null">
+                and drg_id = #{screenId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDrgDataList" parameterType="DrgData" resultMap="DrgDataResult">
+        <include refid="selectDrgDataVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertDrgData" parameterType="DrgData">
+        insert into drm_drg_data (
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        )values(
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateDrgData" parameterType="DrgData">
+        update drm_drg_data
+        <set>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where drg_id = #{drgId}
+    </update>
+
+    <delete id="deleteDrgDataById" parameterType="Long">
+        delete from drm_drg_data where drg_id = #{drgId}
+    </delete>
+
+    <delete id="deleteDrgDataByIds" parameterType="Long">
+        delete from drm_drg_data where drg_id in
+        <foreach item="drgId" collection="array" open="(" separator="," close=")">
+            #{screenId}
+        </foreach>
+    </delete>
+
+</mapper>
