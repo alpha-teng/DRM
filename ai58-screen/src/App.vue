@@ -5,7 +5,7 @@
       <header class="screen-header">
         <div class="header-left">
           <img src="@/assets/logo.png" class="sys-logo" alt="logo" />
-          <span class="sys-name text-gradient">医院运营决策</span>
+          <span class="sys-name text-gradient">医院运营决策分析平台</span>
         </div>
         <!-- Navigation -->
         <nav class="nav-menu">
