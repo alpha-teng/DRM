@@ -53,7 +53,7 @@
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
       </el-form-item>
-      <div style="text-align: center; font-size: 14px;color:#888;padding: 10px;font-weight: bold;">Powered by 江苏灵数有智科技有限公司</div>
+      <div style="text-align: center; font-size: 14px;color:#888;padding: 10px;font-weight: bold;">Powered by 无锡智脑科技有限公司</div>
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
