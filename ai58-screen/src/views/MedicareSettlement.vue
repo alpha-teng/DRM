@@ -337,7 +337,7 @@ onUnmounted(() => {
 .card-value { 
   font-size: 28px; 
   font-weight: bold; 
-  color: #fff;
+  color: #e6f7ff;
   font-family: "Impact", sans-serif; 
   letter-spacing: 1px;
 }
@@ -398,7 +398,7 @@ onUnmounted(() => {
 }
 .ai-title { color: #00e5ff; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
 .ai-content { color: #a0aabf; font-size: 13px; line-height: 1.6; }
-.ai-content strong { color: #fff; }
+.ai-content strong { color: #e6f7ff; }
 
 .center-panel {
   flex: 1;

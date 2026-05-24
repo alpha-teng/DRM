@@ -181,7 +181,7 @@ const initRankChart = () => {
         label: {
           show: true,
           position: 'right',
-          color: '#fff',
+          color: '#e6f7ff',
           formatter: '{c}万'
         },
         data: [5700, 4200, 2800, 1900, 1200, 920, 780, 620, 400, 380]
@@ -208,7 +208,7 @@ const initStructureChart = () => {
           borderColor: '#030409',
           borderWidth: 2
         },
-        label: { show: true, color: '#fff' },
+        label: { show: true, color: '#e6f7ff' },
         data: [
           { value: 1.23, name: '药品收入', itemStyle: { color: '#00e5ff' } },
           { value: 1.08, name: '手术收入', itemStyle: { color: '#1890ff' } },
@@ -300,7 +300,7 @@ onUnmounted(() => {
 .card-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
 .card-value { 
   font-size: 32px; 
-  color: #fff; 
+  color: #e6f7ff; 
   font-weight: bold; 
   font-family: "Impact", sans-serif; 
   letter-spacing: 2px;
@@ -355,7 +355,7 @@ onUnmounted(() => {
 }
 
 .alert-section { margin-bottom: 10px; }
-.alert-type { font-size: 16px; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.alert-type { font-size: 16px; color: #e6f7ff; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
 .dot { width: 8px; height: 8px; border-radius: 50%; }
 .dot.red { background: var(--red-alert); box-shadow: 0 0 8px var(--red-alert); }
 .dot.yellow { background: #faad14; box-shadow: 0 0 8px #faad14; }
@@ -375,7 +375,7 @@ onUnmounted(() => {
   border-left-color: #faad14;
 }
 
-.alert-title { font-size: 14px; color: #fff; font-weight: bold; margin-bottom: 6px; }
+.alert-title { font-size: 14px; color: #e6f7ff; font-weight: bold; margin-bottom: 6px; }
 .alert-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
 
 .ai-suggestion {
@@ -387,7 +387,7 @@ onUnmounted(() => {
 }
 .ai-title { color: var(--theme-color); font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
 .ai-suggestion p { font-size: 13px; color: #a0aabf; line-height: 1.6; margin: 0; }
-.ai-suggestion strong { color: #fff; }
+.ai-suggestion strong { color: #e6f7ff; }
 
 .center-panel {
   flex: 1;

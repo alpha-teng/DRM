@@ -130,7 +130,7 @@ const initRankChart = () => {
           },
           borderRadius: [0, 8, 8, 0]
         },
-        label: { show: true, position: 'right', color: '#fff', formatter: '{c}分' },
+        label: { show: true, position: 'right', color: '#e6f7ff', formatter: '{c}分' },
         data: [95, 92, 88, 85, 82, 78, 76, 74, 72, 68]
       }
     ]
@@ -369,9 +369,9 @@ onUnmounted(() => {
   font-size: 15px;
 }
 
-.nav-item:hover { color: #fff; background: rgba(0, 229, 255, 0.1); }
+.nav-item:hover { color: #e6f7ff; background: rgba(0, 229, 255, 0.1); }
 .nav-item.active {
-  color: #fff;
+  color: #e6f7ff;
   border-color: var(--theme-color);
   background: rgba(0, 229, 255, 0.15);
   box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
@@ -419,7 +419,7 @@ onUnmounted(() => {
   font-size: 14px;
 }
 .level-item .label { color: #a0aabf; }
-.level-item .val { color: #fff; font-weight: bold; }
+.level-item .val { color: #e6f7ff; font-weight: bold; }
 .val.danger { color: #ff4d4f; }
 
 .rank-list {
@@ -450,7 +450,7 @@ onUnmounted(() => {
   background: rgba(255, 77, 79, 0.1);
   border-left: 3px solid #ff4d4f;
   border-radius: 4px;
-  color: #fff;
+  color: #e6f7ff;
 }
 .score.danger { color: #ff4d4f; }
 
@@ -463,7 +463,7 @@ onUnmounted(() => {
 }
 .ai-title { color: #00e5ff; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
 .ai-content { color: #a0aabf; font-size: 13px; line-height: 1.6; }
-.ai-content strong { color: #fff; }
+.ai-content strong { color: #e6f7ff; }
 
 .center-panel {
   flex: 1;

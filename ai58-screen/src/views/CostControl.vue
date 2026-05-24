@@ -185,7 +185,7 @@ const initSankeyChart = () => {
         ],
         itemStyle: { borderWidth: 0, borderColor: '#1a1a1a' },
         lineStyle: { color: 'source', curveness: 0.5, opacity: 0.4 },
-        label: { color: '#fff', fontSize: 12 }
+        label: { color: '#e6f7ff', fontSize: 12 }
       }
     ]
   }
@@ -224,7 +224,7 @@ const initRateChart = () => {
           },
           borderRadius: [4, 4, 0, 0]
         },
-        label: { show: true, position: 'top', color: '#fff', formatter: '{c}%' },
+        label: { show: true, position: 'top', color: '#e6f7ff', formatter: '{c}%' },
         data: [73.7, 83.3, 85.7, 84.2, 120.0, 92.4, 85.2]
       },
       {
@@ -315,7 +315,7 @@ onUnmounted(() => {
 .card-value { 
   font-size: 28px; 
   font-weight: bold; 
-  color: #fff;
+  color: #e6f7ff;
   font-family: "Impact", sans-serif; 
   letter-spacing: 1px;
 }
@@ -364,7 +364,7 @@ onUnmounted(() => {
   gap: 10px;
 }
 .list-item .label { width: 40px; color: #e6f7ff; font-size: 13px; }
-.list-item .val { width: 35px; color: #fff; font-weight: bold; font-size: 13px; }
+.list-item .val { width: 35px; color: #e6f7ff; font-weight: bold; font-size: 13px; }
 .mini-bar {
   flex: 1;
   height: 6px;
@@ -405,7 +405,7 @@ onUnmounted(() => {
 }
 .ai-title { color: #00e5ff; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
 .ai-content { color: #a0aabf; font-size: 13px; line-height: 1.6; }
-.ai-content strong { color: #fff; }
+.ai-content strong { color: #e6f7ff; }
 
 .center-panel {
   flex: 1;

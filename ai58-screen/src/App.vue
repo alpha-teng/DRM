@@ -193,7 +193,7 @@ onUnmounted(() => {
 }
 
 .nav-item-active {
-  color: #fff;
+  color: #e6f7ff;
   font-weight: bold;
   background: rgba(0, 229, 255, 0.2);
   border: 1px solid rgba(0, 229, 255, 0.5);

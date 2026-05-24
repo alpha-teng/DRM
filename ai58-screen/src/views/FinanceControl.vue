@@ -243,7 +243,7 @@ const initBarChart = () => {
           ]),
           borderRadius: [0, 6, 6, 0]
         },
-        label: { show: true, position: 'right', color: '#fff' },
+        label: { show: true, position: 'right', color: '#e6f7ff' },
         data: [5700, 4200, 2800, 1900, 1200]
       }
     ]
@@ -326,7 +326,7 @@ onUnmounted(() => {
 .card-value { 
   font-size: 28px; 
   font-weight: bold; 
-  color: #fff;
+  color: #e6f7ff;
   font-family: "Impact", sans-serif; 
   letter-spacing: 1px;
 }
@@ -370,7 +370,7 @@ onUnmounted(() => {
   color: #a0aabf;
   font-size: 13px;
 }
-.list-item .val { color: #fff; font-weight: bold; }
+.list-item .val { color: #e6f7ff; font-weight: bold; }
 
 .rank-list {
   display: flex;
@@ -469,6 +469,6 @@ onUnmounted(() => {
 }
 .prog-bar-fill.warning { background: #faad14; box-shadow: 0 0 5px #faad14; }
 .prog-bar-fill.danger { background: #ff4d4f; box-shadow: 0 0 5px #ff4d4f; }
-.prog-val { width: 40px; text-align: right; color: #fff; font-size: 13px; font-weight: bold; }
+.prog-val { width: 40px; text-align: right; color: #e6f7ff; font-size: 13px; font-weight: bold; }
 .prog-icon { color: #ff4d4f; font-size: 14px; }
 </style>

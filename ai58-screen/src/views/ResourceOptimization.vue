@@ -147,7 +147,7 @@ const initBedChart = () => {
           },
           borderRadius: [4, 4, 0, 0]
         },
-        label: { show: true, position: 'top', color: '#fff', formatter: '{c}%' },
+        label: { show: true, position: 'top', color: '#e6f7ff', formatter: '{c}%' },
         data: [96, 92, 88, 85, 82, 80, 75, 69, 67, 60]
       },
       {
@@ -216,7 +216,7 @@ const initDeviceChart = () => {
           },
           borderRadius: [0, 6, 6, 0]
         },
-        label: { show: true, position: 'right', color: '#fff', formatter: '{c}%' },
+        label: { show: true, position: 'right', color: '#e6f7ff', formatter: '{c}%' },
         data: [92, 83, 75, 67, 58, 50]
       }
     ]
@@ -350,7 +350,7 @@ onUnmounted(() => {
 .card-value { 
   font-size: 28px; 
   font-weight: bold; 
-  color: #fff;
+  color: #e6f7ff;
   font-family: "Impact", sans-serif; 
   letter-spacing: 1px;
 }
@@ -396,7 +396,7 @@ onUnmounted(() => {
 }
 .res-title { color: #00e5ff; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
 .res-stat { color: #a0aabf; font-size: 13px; }
-.val { color: #fff; font-weight: bold; }
+.val { color: #e6f7ff; font-weight: bold; }
 .val.highlight { color: #00e5ff; }
 .val.warning { color: #faad14; }
 

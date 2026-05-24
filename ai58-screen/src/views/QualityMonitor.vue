@@ -311,7 +311,7 @@ onUnmounted(() => {
 .card-value { 
   font-size: 28px; 
   font-weight: bold; 
-  color: #fff;
+  color: #e6f7ff;
   font-family: "Impact", sans-serif; 
   letter-spacing: 1px;
 }
@@ -380,7 +380,7 @@ onUnmounted(() => {
   border-radius: 4px;
 }
 .dept-info { display: flex; flex-direction: column; gap: 4px; }
-.dept-info .name { color: #fff; font-weight: bold; font-size: 14px;}
+.dept-info .name { color: #e6f7ff; font-weight: bold; font-size: 14px;}
 .dept-info .desc { color: #a0aabf; font-size: 12px;}
 .status { padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
 .status.danger { background: rgba(255, 77, 79, 0.2); color: #ff4d4f; }

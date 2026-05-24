@@ -1,6 +1,6 @@
 :root {
   --bg-color: #030409;
-  --text-primary: #fff;
+  --text-primary: #e6f7ff;
   --text-secondary: #8da4c7;
   --theme-color: #00e5ff;
   --card-bg: rgba(9, 25, 49, 0.6);
@@ -46,7 +46,7 @@ body {
 .tech-panel::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
 .text-gradient {
-  background: linear-gradient(180deg, #fff, var(--theme-color));
+  background: linear-gradient(180deg, #e6f7ff, var(--theme-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

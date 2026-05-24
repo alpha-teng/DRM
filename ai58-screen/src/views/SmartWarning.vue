@@ -125,7 +125,7 @@ const initPieChart = () => {
         },
         label: { show: false, position: 'center' },
         emphasis: {
-          label: { show: true, fontSize: 16, fontWeight: 'bold', color: '#fff' }
+          label: { show: true, fontSize: 16, fontWeight: 'bold', color: '#e6f7ff' }
         },
         labelLine: { show: false },
         data: [
@@ -363,7 +363,7 @@ onUnmounted(() => {
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(255,255,255,0.3);
 }
-.count { width: 30px; text-align: right; font-size: 14px; color: #fff; }
+.count { width: 30px; text-align: right; font-size: 14px; color: #e6f7ff; }
 
 .center-panel {
   flex: 1;

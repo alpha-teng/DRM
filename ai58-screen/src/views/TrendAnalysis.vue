@@ -377,7 +377,7 @@ onUnmounted(() => {
   transition: all 0.3s;
   font-size: 14px;
 }
-.filter-btn:hover { color: #fff; }
+.filter-btn:hover { color: #e6f7ff; }
 .filter-btn.active {
   background: rgba(0, 229, 255, 0.2);
   color: #00e5ff;
@@ -445,7 +445,7 @@ onUnmounted(() => {
   line-height: 24px; text-align: center;
   border-radius: 4px;
   background: rgba(255,255,255,0.1);
-  color: #fff; font-weight: bold; font-size: 13px;
+  color: #e6f7ff; font-weight: bold; font-size: 13px;
   margin-right: 15px;
 }
 .rank-num.top1 { background: #ff4d4f; }
