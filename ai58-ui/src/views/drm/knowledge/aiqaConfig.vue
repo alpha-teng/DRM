@@ -73,7 +73,7 @@ export default {
       dataList: [],
       queryParams: { pageNum: 1, pageSize: 10, queryDate: '', deptId: '' },
       dialogTitle: '', dialogVisible: false,
-      form: {{}, rules: {{ name: [{ required: true, message: '名称不能为空', trigger: 'blur' }]}}
+      form: {}, rules: { name: [{ required: true, message: '名称不能为空', trigger: 'blur' }] }
     }
   },
   created() { this.getList() },
