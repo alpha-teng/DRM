@@ -25,7 +25,7 @@
     z-index: 1001;
     overflow: hidden;
     -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    box-shadow: 2px 0 6px rgba(13,92,69,.35);
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -85,6 +85,27 @@
     }
 
     & .theme-dark .is-active > .el-submenu__title {
+      color: $base-menu-color-active !important;
+    }
+
+    // hospital green: active menu item highlight
+    .el-menu-item.is-active {
+      background-color: #0f7a5c !important;
+      color: #ffffff !important;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #4db8a4;
+        border-radius: 0 2px 2px 0;
+      }
+    }
+
+    .el-submenu__title.is-active {
       color: $base-menu-color-active !important;
     }
 
