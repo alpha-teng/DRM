@@ -36,7 +36,7 @@ public class DataSourceController extends BaseController
     /**
      * 获取数据源列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:list')")
     @GetMapping("/list")
     public TableDataInfo list(DataSource datasource)
     {
@@ -45,7 +45,7 @@ public class DataSourceController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:export')")
     @Log(title = "数据源", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DataSource datasource)
@@ -55,14 +55,14 @@ public class DataSourceController extends BaseController
         util.exportExcel(response, list, "数据源数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:query')")
     @GetMapping(value = "/{sourceId}")
     public AjaxResult getInfo(@PathVariable Long sourceId)
     {
         return success(datasourceService.selectDataSourceById(sourceId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:add')")
     @Log(title = "数据源", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DataSource datasource)
@@ -71,7 +71,7 @@ public class DataSourceController extends BaseController
         return toAjax(datasourceService.insertDataSource(datasource));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:edit')")
     @Log(title = "数据源", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DataSource datasource)
@@ -80,7 +80,7 @@ public class DataSourceController extends BaseController
         return toAjax(datasourceService.updateDataSource(datasource));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataSource:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataSource:remove')")
     @Log(title = "数据源", businessType = BusinessType.DELETE)
     @DeleteMapping("/{sourceIds}")
     public AjaxResult remove(@PathVariable Long[] sourceIds)

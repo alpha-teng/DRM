@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.PerfReportMapper">
+    <resultMap type="PerfReport" id="PerfReportResult">
+        <result property="reportId"        column="report_id"        />
+        <result property="reportTitle"     column="report_title"     />
+        <result property="reportPeriod"    column="report_period"    />
+        <result property="reportType"      column="report_type"      />
+        <result property="targetDept"      column="target_dept"      />
+        <result property="content"         column="content"          />
+        <result property="status"          column="status"           />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+    </resultMap>
+
+    <sql id="selectPerfReportVo">
+        select report_id, report_title, report_period, report_type, target_dept, content,
+               status, create_by, create_time, update_by, update_time, remark
+        from drm_perf_report
+    </sql>
+
+    <select id="selectPerfReportList" parameterType="PerfReport" resultMap="PerfReportResult">
+        <include refid="selectPerfReportVo"/>
+        <where>
+            <if test="reportTitle != null and reportTitle != ''"> and report_title like concat('%', #{reportTitle}, '%')</if>
+            <if test="reportPeriod != null and reportPeriod != ''"> and report_period = #{reportPeriod}</if>
+            <if test="reportType != null and reportType != ''"> and report_type = #{reportType}</if>
+            <if test="targetDept != null and targetDept != ''"> and target_dept like concat('%', #{targetDept}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectPerfReportById" parameterType="Long" resultMap="PerfReportResult">
+        <include refid="selectPerfReportVo"/>
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertPerfReport" parameterType="PerfReport" useGeneratedKeys="true" keyProperty="reportId">
+        insert into drm_perf_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">report_title,</if>
+            <if test="reportPeriod != null and reportPeriod != ''">report_period,</if>
+            <if test="reportType != null and reportType != ''">report_type,</if>
+            <if test="targetDept != null and targetDept != ''">target_dept,</if>
+            <if test="content != null">content,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">#{reportTitle},</if>
+            <if test="reportPeriod != null and reportPeriod != ''">#{reportPeriod},</if>
+            <if test="reportType != null and reportType != ''">#{reportType},</if>
+            <if test="targetDept != null and targetDept != ''">#{targetDept},</if>
+            <if test="content != null">#{content},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updatePerfReport" parameterType="PerfReport">
+        update drm_perf_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">report_title = #{reportTitle},</if>
+            <if test="reportPeriod != null and reportPeriod != ''">report_period = #{reportPeriod},</if>
+            <if test="reportType != null and reportType != ''">report_type = #{reportType},</if>
+            <if test="targetDept != null and targetDept != ''">target_dept = #{targetDept},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deletePerfReportById" parameterType="Long">
+        delete from drm_perf_report where report_id = #{reportId}
+    </delete>
+
+    <delete id="deletePerfReportByIds" parameterType="Long">
+        delete from drm_perf_report where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>

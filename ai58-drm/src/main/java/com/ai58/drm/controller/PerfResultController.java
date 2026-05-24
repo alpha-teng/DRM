@@ -36,7 +36,7 @@ public class PerfResultController extends BaseController
     /**
      * 获取绩效结果列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:list')")
     @GetMapping("/list")
     public TableDataInfo list(PerfResult perfresult)
     {
@@ -45,7 +45,7 @@ public class PerfResultController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:export')")
     @Log(title = "绩效结果", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, PerfResult perfresult)
@@ -55,14 +55,14 @@ public class PerfResultController extends BaseController
         util.exportExcel(response, list, "绩效结果数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:query')")
     @GetMapping(value = "/{resultId}")
     public AjaxResult getInfo(@PathVariable Long resultId)
     {
         return success(perfresultService.selectPerfResultById(resultId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:add')")
     @Log(title = "绩效结果", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PerfResult perfresult)
@@ -71,7 +71,7 @@ public class PerfResultController extends BaseController
         return toAjax(perfresultService.insertPerfResult(perfresult));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:edit')")
     @Log(title = "绩效结果", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PerfResult perfresult)
@@ -80,7 +80,7 @@ public class PerfResultController extends BaseController
         return toAjax(perfresultService.updatePerfResult(perfresult));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfResult:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfResult:remove')")
     @Log(title = "绩效结果", businessType = BusinessType.DELETE)
     @DeleteMapping("/{resultIds}")
     public AjaxResult remove(@PathVariable Long[] resultIds)

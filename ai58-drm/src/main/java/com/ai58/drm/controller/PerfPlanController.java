@@ -36,7 +36,7 @@ public class PerfPlanController extends BaseController
     /**
      * 获取绩效方案列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:list')")
     @GetMapping("/list")
     public TableDataInfo list(PerfPlan perfplan)
     {
@@ -45,7 +45,7 @@ public class PerfPlanController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:export')")
     @Log(title = "绩效方案", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, PerfPlan perfplan)
@@ -55,14 +55,14 @@ public class PerfPlanController extends BaseController
         util.exportExcel(response, list, "绩效方案数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:query')")
     @GetMapping(value = "/{planId}")
     public AjaxResult getInfo(@PathVariable Long planId)
     {
         return success(perfplanService.selectPerfPlanById(planId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:add')")
     @Log(title = "绩效方案", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PerfPlan perfplan)
@@ -71,7 +71,7 @@ public class PerfPlanController extends BaseController
         return toAjax(perfplanService.insertPerfPlan(perfplan));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:edit')")
     @Log(title = "绩效方案", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PerfPlan perfplan)
@@ -80,7 +80,7 @@ public class PerfPlanController extends BaseController
         return toAjax(perfplanService.updatePerfPlan(perfplan));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/perfPlan:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/perfPlan:remove')")
     @Log(title = "绩效方案", businessType = BusinessType.DELETE)
     @DeleteMapping("/{planIds}")
     public AjaxResult remove(@PathVariable Long[] planIds)

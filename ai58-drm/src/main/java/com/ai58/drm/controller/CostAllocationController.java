@@ -36,7 +36,7 @@ public class CostAllocationController extends BaseController
     /**
      * 获取成本分摊列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:list')")
     @GetMapping("/list")
     public TableDataInfo list(CostAllocation costallocation)
     {
@@ -45,7 +45,7 @@ public class CostAllocationController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:export')")
     @Log(title = "成本分摊", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CostAllocation costallocation)
@@ -55,14 +55,14 @@ public class CostAllocationController extends BaseController
         util.exportExcel(response, list, "成本分摊数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:query')")
     @GetMapping(value = "/{allocationId}")
     public AjaxResult getInfo(@PathVariable Long allocationId)
     {
         return success(costallocationService.selectCostAllocationById(allocationId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:add')")
     @Log(title = "成本分摊", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CostAllocation costallocation)
@@ -71,7 +71,7 @@ public class CostAllocationController extends BaseController
         return toAjax(costallocationService.insertCostAllocation(costallocation));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:edit')")
     @Log(title = "成本分摊", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CostAllocation costallocation)
@@ -80,7 +80,7 @@ public class CostAllocationController extends BaseController
         return toAjax(costallocationService.updateCostAllocation(costallocation));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costAllocation:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/costAllocation:remove')")
     @Log(title = "成本分摊", businessType = BusinessType.DELETE)
     @DeleteMapping("/{allocationIds}")
     public AjaxResult remove(@PathVariable Long[] allocationIds)

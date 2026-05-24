@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.QualityPerfMapper">
+    <resultMap type="QualityPerf" id="QualityPerfResult">
+        <result property="perfId"          column="perf_id"          />
+        <result property="deptName"        column="dept_name"        />
+        <result property="qualityScore"    column="quality_score"    />
+        <result property="qualifiedRate"   column="qualified_rate"   />
+        <result property="excellentRate"   column="excellent_rate"   />
+        <result property="incidentCnt"     column="incident_cnt"     />
+        <result property="calcDate"        column="calc_date"        />
+        <result property="status"          column="status"           />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+    </resultMap>
+
+    <sql id="selectQualityPerfVo">
+        select perf_id, dept_name, quality_score, qualified_rate, excellent_rate, incident_cnt,
+               calc_date, status, create_by, create_time, update_by, update_time, remark
+        from drm_quality_perf
+    </sql>
+
+    <select id="selectQualityPerfList" parameterType="QualityPerf" resultMap="QualityPerfResult">
+        <include refid="selectQualityPerfVo"/>
+        <where>
+            <if test="deptName != null and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="calcDate != null and calcDate != ''"> and calc_date = #{calcDate}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectQualityPerfById" parameterType="Long" resultMap="QualityPerfResult">
+        <include refid="selectQualityPerfVo"/>
+        where perf_id = #{perfId}
+    </select>
+
+    <insert id="insertQualityPerf" parameterType="QualityPerf" useGeneratedKeys="true" keyProperty="perfId">
+        insert into drm_quality_perf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="qualityScore != null">quality_score,</if>
+            <if test="qualifiedRate != null">qualified_rate,</if>
+            <if test="excellentRate != null">excellent_rate,</if>
+            <if test="incidentCnt != null">incident_cnt,</if>
+            <if test="calcDate != null">calc_date,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="qualityScore != null">#{qualityScore},</if>
+            <if test="qualifiedRate != null">#{qualifiedRate},</if>
+            <if test="excellentRate != null">#{excellentRate},</if>
+            <if test="incidentCnt != null">#{incidentCnt},</if>
+            <if test="calcDate != null">#{calcDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateQualityPerf" parameterType="QualityPerf">
+        update drm_quality_perf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="qualityScore != null">quality_score = #{qualityScore},</if>
+            <if test="qualifiedRate != null">qualified_rate = #{qualifiedRate},</if>
+            <if test="excellentRate != null">excellent_rate = #{excellentRate},</if>
+            <if test="incidentCnt != null">incident_cnt = #{incidentCnt},</if>
+            <if test="calcDate != null">calc_date = #{calcDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where perf_id = #{perfId}
+    </update>
+
+    <delete id="deleteQualityPerfById" parameterType="Long">
+        delete from drm_quality_perf where perf_id = #{perfId}
+    </delete>
+
+    <delete id="deleteQualityPerfByIds" parameterType="Long">
+        delete from drm_quality_perf where perf_id in
+        <foreach item="perfId" collection="array" open="(" separator="," close=")">
+            #{perfId}
+        </foreach>
+    </delete>
+</mapper>

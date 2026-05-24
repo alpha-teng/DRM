@@ -27,7 +27,7 @@ import com.ai58.drm.service.ICostDataService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/costData")
+@RequestMapping("drm/cost/costData")
 public class CostDataController extends BaseController
 {
     @Autowired
@@ -36,7 +36,7 @@ public class CostDataController extends BaseController
     /**
      * 获取成本数据列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/costData:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:list')")
     @GetMapping("/list")
     public TableDataInfo list(CostData costdata)
     {
@@ -45,7 +45,7 @@ public class CostDataController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costData:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:export')")
     @Log(title = "成本数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, CostData costdata)
@@ -55,14 +55,14 @@ public class CostDataController extends BaseController
         util.exportExcel(response, list, "成本数据数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costData:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:query')")
     @GetMapping(value = "/{costId}")
     public AjaxResult getInfo(@PathVariable Long costId)
     {
         return success(costdataService.selectCostDataById(costId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costData:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:add')")
     @Log(title = "成本数据", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody CostData costdata)
@@ -71,7 +71,7 @@ public class CostDataController extends BaseController
         return toAjax(costdataService.insertCostData(costdata));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costData:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:edit')")
     @Log(title = "成本数据", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody CostData costdata)
@@ -80,7 +80,7 @@ public class CostDataController extends BaseController
         return toAjax(costdataService.updateCostData(costdata));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/costData:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/costData:remove')")
     @Log(title = "成本数据", businessType = BusinessType.DELETE)
     @DeleteMapping("/{costIds}")
     public AjaxResult remove(@PathVariable Long[] costIds)

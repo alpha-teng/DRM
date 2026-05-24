@@ -36,7 +36,7 @@ public class ReceivableController extends BaseController
     /**
      * 获取应收账款列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/receivable:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:list')")
     @GetMapping("/list")
     public TableDataInfo list(Receivable receivable)
     {
@@ -45,7 +45,7 @@ public class ReceivableController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/receivable:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:export')")
     @Log(title = "应收账款", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Receivable receivable)
@@ -55,14 +55,14 @@ public class ReceivableController extends BaseController
         util.exportExcel(response, list, "应收账款数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/receivable:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:query')")
     @GetMapping(value = "/{receivableId}")
     public AjaxResult getInfo(@PathVariable Long receivableId)
     {
         return success(receivableService.selectReceivableById(receivableId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/receivable:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:add')")
     @Log(title = "应收账款", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Receivable receivable)
@@ -71,7 +71,7 @@ public class ReceivableController extends BaseController
         return toAjax(receivableService.insertReceivable(receivable));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/receivable:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:edit')")
     @Log(title = "应收账款", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Receivable receivable)
@@ -80,7 +80,7 @@ public class ReceivableController extends BaseController
         return toAjax(receivableService.updateReceivable(receivable));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/receivable:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/receivable:remove')")
     @Log(title = "应收账款", businessType = BusinessType.DELETE)
     @DeleteMapping("/{receivableIds}")
     public AjaxResult remove(@PathVariable Long[] receivableIds)

@@ -36,7 +36,7 @@ public class DataMappingController extends BaseController
     /**
      * 获取数据映射列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:list')")
     @GetMapping("/list")
     public TableDataInfo list(DataMapping datamapping)
     {
@@ -45,7 +45,7 @@ public class DataMappingController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:export')")
     @Log(title = "数据映射", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DataMapping datamapping)
@@ -55,14 +55,14 @@ public class DataMappingController extends BaseController
         util.exportExcel(response, list, "数据映射数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:query')")
     @GetMapping(value = "/{mappingId}")
     public AjaxResult getInfo(@PathVariable Long mappingId)
     {
         return success(datamappingService.selectDataMappingById(mappingId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:add')")
     @Log(title = "数据映射", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DataMapping datamapping)
@@ -71,7 +71,7 @@ public class DataMappingController extends BaseController
         return toAjax(datamappingService.insertDataMapping(datamapping));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:edit')")
     @Log(title = "数据映射", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DataMapping datamapping)
@@ -80,7 +80,7 @@ public class DataMappingController extends BaseController
         return toAjax(datamappingService.updateDataMapping(datamapping));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataMapping:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataMapping:remove')")
     @Log(title = "数据映射", businessType = BusinessType.DELETE)
     @DeleteMapping("/{mappingIds}")
     public AjaxResult remove(@PathVariable Long[] mappingIds)

@@ -111,7 +111,6 @@ export default {
       })
     },
     reset() { this.form = { status: '0' }; this.$nextTick(() => { if (this.$refs.form) this.$refs.form.clearValidate() }) },
-    parseTime(time) { return time ? this.$parseTime(time) : '' }
   }
 }
 </script>

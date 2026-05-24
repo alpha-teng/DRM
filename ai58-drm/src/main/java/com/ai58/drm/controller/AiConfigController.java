@@ -36,7 +36,7 @@ public class AiConfigController extends BaseController
     /**
      * 获取AI配置列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:list')")
     @GetMapping("/list")
     public TableDataInfo list(AiConfig aiconfig)
     {
@@ -45,7 +45,7 @@ public class AiConfigController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:export')")
     @Log(title = "AI配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AiConfig aiconfig)
@@ -55,14 +55,14 @@ public class AiConfigController extends BaseController
         util.exportExcel(response, list, "AI配置数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:query')")
     @GetMapping(value = "/{configId}")
     public AjaxResult getInfo(@PathVariable Long configId)
     {
         return success(aiconfigService.selectAiConfigById(configId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:add')")
     @Log(title = "AI配置", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody AiConfig aiconfig)
@@ -71,7 +71,7 @@ public class AiConfigController extends BaseController
         return toAjax(aiconfigService.insertAiConfig(aiconfig));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:edit')")
     @Log(title = "AI配置", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody AiConfig aiconfig)
@@ -80,7 +80,7 @@ public class AiConfigController extends BaseController
         return toAjax(aiconfigService.updateAiConfig(aiconfig));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiConfig:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiConfig:remove')")
     @Log(title = "AI配置", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
     public AjaxResult remove(@PathVariable Long[] configIds)

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.RbrvsMapper">
+    <resultMap type="Rbrvs" id="RbrvsResult">
+        <result property="rbrvsId"           column="rbrvs_id"           />
+        <result property="itemName"          column="item_name"          />
+        <result property="itemCode"          column="item_code"          />
+        <result property="deptName"          column="dept_name"          />
+        <result property="basePoint"         column="base_point"         />
+        <result property="difficultyCoeff"   column="difficulty_coeff"   />
+        <result property="perfAmount"        column="perf_amount"        />
+        <result property="effDate"           column="eff_date"           />
+        <result property="status"            column="status"             />
+        <result property="createBy"          column="create_by"          />
+        <result property="createTime"        column="create_time"        />
+        <result property="updateBy"          column="update_by"          />
+        <result property="updateTime"        column="update_time"        />
+        <result property="remark"            column="remark"             />
+    </resultMap>
+
+    <sql id="selectRbrvsVo">
+        select rbrvs_id, item_name, item_code, dept_name, base_point, difficulty_coeff, perf_amount,
+               eff_date, status, create_by, create_time, update_by, update_time, remark
+        from drm_rbrvs
+    </sql>
+
+    <select id="selectRbrvsList" parameterType="Rbrvs" resultMap="RbrvsResult">
+        <include refid="selectRbrvsVo"/>
+        <where>
+            <if test="itemName != null and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+            <if test="itemCode != null and itemCode != ''"> and item_code = #{itemCode}</if>
+            <if test="deptName != null and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectRbrvsById" parameterType="Long" resultMap="RbrvsResult">
+        <include refid="selectRbrvsVo"/>
+        where rbrvs_id = #{rbrvsId}
+    </select>
+
+    <insert id="insertRbrvs" parameterType="Rbrvs" useGeneratedKeys="true" keyProperty="rbrvsId">
+        insert into drm_rbrvs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemName != null and itemName != ''">item_name,</if>
+            <if test="itemCode != null and itemCode != ''">item_code,</if>
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="basePoint != null">base_point,</if>
+            <if test="difficultyCoeff != null">difficulty_coeff,</if>
+            <if test="perfAmount != null">perf_amount,</if>
+            <if test="effDate != null">eff_date,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemName != null and itemName != ''">#{itemName},</if>
+            <if test="itemCode != null and itemCode != ''">#{itemCode},</if>
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="basePoint != null">#{basePoint},</if>
+            <if test="difficultyCoeff != null">#{difficultyCoeff},</if>
+            <if test="perfAmount != null">#{perfAmount},</if>
+            <if test="effDate != null">#{effDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateRbrvs" parameterType="Rbrvs">
+        update drm_rbrvs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemName != null and itemName != ''">item_name = #{itemName},</if>
+            <if test="itemCode != null and itemCode != ''">item_code = #{itemCode},</if>
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="basePoint != null">base_point = #{basePoint},</if>
+            <if test="difficultyCoeff != null">difficulty_coeff = #{difficultyCoeff},</if>
+            <if test="perfAmount != null">perf_amount = #{perfAmount},</if>
+            <if test="effDate != null">eff_date = #{effDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where rbrvs_id = #{rbrvsId}
+    </update>
+
+    <delete id="deleteRbrvsById" parameterType="Long">
+        delete from drm_rbrvs where rbrvs_id = #{rbrvsId}
+    </delete>
+
+    <delete id="deleteRbrvsByIds" parameterType="Long">
+        delete from drm_rbrvs where rbrvs_id in
+        <foreach item="rbrvsId" collection="array" open="(" separator="," close=")">
+            #{rbrvsId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,15 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
-      <el-form-item label="查询月份" prop="queryDate">
-        <el-date-picker v-model="queryParams.queryDate" type="month" value-format="yyyy-MM" placeholder="选择月份" style="width: 200px" />
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item label="预警日期" prop="warnDate">
+        <el-date-picker v-model="queryParams.warnDate" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 150px" />
       </el-form-item>
-      <el-form-item label="科室" prop="deptId">
-        <el-select v-model="queryParams.deptId" placeholder="请选择科室" clearable style="width: 200px">
-          <el-option label="全部科室" value="" />
-          <el-option label="内科" value="1" /><el-option label="外科" value="2" />
-          <el-option label="儿科" value="3" /><el-option label="妇产科" value="4" />
-          <el-option label="急诊科" value="5" />
+      <el-form-item label="预警类型" prop="warnType">
+        <el-select v-model="queryParams.warnType" placeholder="请选择预警类型" clearable style="width: 200px">
+          <el-option label="全部类型" value="" />
+          <el-option label="费用预警" value="费用预警" />
+          <el-option label="效率预警" value="效率预警" />
+          <el-option label="质量预警" value="质量预警" />
+          <el-option label="DRG预警" value="DRG预警" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -26,32 +27,58 @@
     </el-row>
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="编号" align="center" prop="id" width="100" />
-      <el-table-column label="名称" align="center" prop="name" :show-overflow-tooltip="true" />
-      <el-table-column label="科室" align="center" prop="deptName" />
-      <el-table-column label="数值" align="center" prop="value" />
-      <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope"><el-tag v-if="scope.row.status === '0'" type="success">正常</el-tag><el-tag v-else type="danger">异常</el-tag></template>
+      <el-table-column label="预警ID" align="center" prop="warningId" width="100" />
+      <el-table-column label="预警日期" align="center" prop="warnDate" width="120" />
+      <el-table-column label="预警类型" align="center" prop="warnType" width="120" />
+      <el-table-column label="预警级别" align="center" prop="warnLevel" width="100">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.warnLevel === '高'" type="danger">高</el-tag>
+          <el-tag v-else-if="scope.row.warnLevel === '中'" type="warning">中</el-tag>
+          <el-tag v-else type="info">低</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="科室" align="center" prop="deptName" width="150" />
+      <el-table-column label="预警内容" align="center" prop="warnContent" :show-overflow-tooltip="true" />
+      <el-table-column label="处理状态" align="center" prop="handleStatus" width="100">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.handleStatus === '待处理'" type="warning">待处理</el-tag>
+          <el-tag v-else-if="scope.row.handleStatus === '处理中'" type="primary">处理中</el-tag>
+          <el-tag v-else type="success">已完成</el-tag>
+        </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="160">
-        <template slot-scope="scope"><span>{ parseTime(scope.row.createTime) }</span></template>
+        <template slot-scope="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
         <template slot-scope="scope"><el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button><el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button></template>
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="600px" append-to-body>
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="名称" prop="name"><el-input v-model="form.name" placeholder="请输入名称" /></el-form-item>
-        <el-form-item label="科室" prop="deptId">
-          <el-select v-model="form.deptId" placeholder="请选择科室" style="width: 100%">
-            <el-option label="内科" value="1" /><el-option label="外科" value="2" />
-            <el-option label="儿科" value="3" /><el-option label="妇产科" value="4" /><el-option label="急诊科" value="5" />
+        <el-form-item label="预警日期" prop="warnDate"><el-date-picker v-model="form.warnDate" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" style="width: 100%" /></el-form-item>
+        <el-form-item label="预警类型" prop="warnType">
+          <el-select v-model="form.warnType" placeholder="请选择预警类型" style="width: 100%">
+            <el-option label="费用预警" value="费用预警" />
+            <el-option label="效率预警" value="效率预警" />
+            <el-option label="质量预警" value="质量预警" />
+            <el-option label="DRG预警" value="DRG预警" />
           </el-select>
         </el-form-item>
-        <el-form-item label="数值" prop="value"><el-input v-model="form.value" placeholder="请输入数值" /></el-form-item>
-        <el-form-item label="状态" prop="status"><el-radio-group v-model="form.status"><el-radio label="0">正常</el-radio><el-radio label="1">异常</el-radio></el-radio-group></el-form-item>
+        <el-form-item label="预警级别" prop="warnLevel">
+          <el-radio-group v-model="form.warnLevel"><el-radio label="高">高</el-radio><el-radio label="中">中</el-radio><el-radio label="低">低</el-radio></el-radio-group>
+        </el-form-item>
+        <el-form-item label="科室名称" prop="deptName"><el-input v-model="form.deptName" placeholder="请输入科室名称" /></el-form-item>
+        <el-form-item label="预警内容" prop="warnContent"><el-input v-model="form.warnContent" type="textarea" :rows="4" placeholder="请输入预警内容" /></el-form-item>
+        <el-form-item label="AI建议" prop="aiSuggestion"><el-input v-model="form.aiSuggestion" type="textarea" :rows="3" placeholder="AI处理建议" /></el-form-item>
+        <el-form-item label="处理状态" prop="handleStatus">
+          <el-select v-model="form.handleStatus" placeholder="请选择处理状态" style="width: 100%">
+            <el-option label="待处理" value="待处理" />
+            <el-option label="处理中" value="处理中" />
+            <el-option label="已完成" value="已完成" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="处理结果" prop="handleResult"><el-input v-model="form.handleResult" type="textarea" placeholder="请输入处理结果" /></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="form.remark" type="textarea" placeholder="请输入备注" /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -63,55 +90,79 @@
 </template>
 
 <script>
-import { WarningcenterApi } from '@/api/drm/warningCenter'
+import { WarningCenterApi } from '@/api/drm/warningCenter'
 
 export default {
   name: "Warningcenter",
   data() {
     return {
-      loading: true, showSearch: true, ids: [], single: true, multiple: true, total: 0,
+      loading: true,
+      showSearch: true,
+      ids: [],
+      single: true,
+      multiple: true,
+      total: 0,
       dataList: [],
-      queryParams: { pageNum: 1, pageSize: 10, queryDate: '', deptId: '' },
-      dialogTitle: '', dialogVisible: false,
-      form: {}, rules: { name: [{ required: true, message: '名称不能为空', trigger: 'blur' }] }
+      queryParams: { pageNum: 1, pageSize: 10, warnDate: '', warnType: '' },
+      dialogTitle: '',
+      dialogVisible: false,
+      form: {},
+      rules: {
+        warnDate: [{ required: true, message: '预警日期不能为空', trigger: 'blur' }],
+        warnType: [{ required: true, message: '请选择预警类型', trigger: 'change' }],
+        warnLevel: [{ required: true, message: '请选择预警级别', trigger: 'change' }],
+        deptName: [{ required: true, message: '科室名称不能为空', trigger: 'blur' }],
+        warnContent: [{ required: true, message: '预警内容不能为空', trigger: 'blur' }]
+      }
     }
   },
   created() { this.getList() },
   methods: {
     getList() {
       this.loading = true
-      WarningcenterApi.list(this.queryParams).then(res => {
-        this.dataList = res.rows || []; this.total = res.total || 0; this.loading = false
+      WarningCenterApi.list(this.queryParams).then(res => {
+        this.dataList = res.rows || []
+        this.total = res.total || 0
+        this.loading = false
       })
     },
     handleQuery() { this.queryParams.pageNum = 1; this.getList() },
     resetQuery() { this.$refs.queryForm.resetFields(); this.handleQuery() },
-    handleSelectionChange(sel) { this.ids = sel.map(i => i.id); this.single = sel.length !== 1; this.multiple = !sel.length },
+    handleSelectionChange(sel) { this.ids = sel.map(i => i.warningId); this.single = sel.length !== 1; this.multiple = !sel.length },
     handleAdd() { this.reset(); this.dialogTitle = '新增'; this.dialogVisible = true },
     handleUpdate(row) {
       this.reset()
-      const id = row ? row.id : this.ids[0]
-      WarningcenterApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
+      const id = row ? row.warningId : this.ids[0]
+      WarningCenterApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
     },
     handleDelete(row) {
-      const ids = row ? [row.id] : this.ids
+      const ids = row ? [row.warningId] : this.ids
       this.$confirm('是否确认删除选中的数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => WarningcenterApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
+        .then(() => WarningCenterApi.remove(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
     },
     handleExport() {
       this.$confirm('是否确认导出所有数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => { this.loading = true; WarningcenterApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
+        .then(() => { this.loading = true; WarningCenterApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
     },
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const action = this.form.id ? WarningcenterApi.update(this.form) : WarningcenterApi.add(this.form)
-          action.then(() => { this.$message.success(this.form.id ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
+          const action = this.form.warningId ? WarningCenterApi.update(this.form) : WarningCenterApi.add(this.form)
+          action.then(() => { this.$message.success(this.form.warningId ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
         }
       })
     },
-    reset() { this.form = { status: '0' }; this.$nextTick(() => { if (this.$refs.form) this.$refs.form.clearValidate() }) },
-    parseTime(time) { return time ? this.$parseTime(time) : '' }
+    reset() {
+      this.form = {
+        warnDate: new Date().toISOString().split('T')[0],
+        warnType: '费用预警',
+        warnLevel: '中',
+        handleStatus: '待处理'
+      }
+      this.$nextTick(() => {
+        if (this.$refs.form) this.$refs.form.clearValidate()
+      })
+    }
   }
 }
 </script>

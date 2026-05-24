@@ -36,7 +36,7 @@ public class BigScreenController extends BaseController
     /**
      * 获取大屏管理列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:list')")
     @GetMapping("/list")
     public TableDataInfo list(BigScreen bigscreen)
     {
@@ -45,7 +45,7 @@ public class BigScreenController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:export')")
     @Log(title = "大屏管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BigScreen bigscreen)
@@ -55,14 +55,14 @@ public class BigScreenController extends BaseController
         util.exportExcel(response, list, "大屏管理数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:query')")
     @GetMapping(value = "/{screenId}")
     public AjaxResult getInfo(@PathVariable Long screenId)
     {
         return success(bigscreenService.selectBigScreenById(screenId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:add')")
     @Log(title = "大屏管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody BigScreen bigscreen)
@@ -71,7 +71,7 @@ public class BigScreenController extends BaseController
         return toAjax(bigscreenService.insertBigScreen(bigscreen));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:edit')")
     @Log(title = "大屏管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody BigScreen bigscreen)
@@ -80,7 +80,7 @@ public class BigScreenController extends BaseController
         return toAjax(bigscreenService.updateBigScreen(bigscreen));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/bigScreen:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/bigScreen:remove')")
     @Log(title = "大屏管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{screenIds}")
     public AjaxResult remove(@PathVariable Long[] screenIds)

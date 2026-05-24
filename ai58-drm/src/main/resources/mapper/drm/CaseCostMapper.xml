@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.CaseCostMapper">
+
+    <resultMap type="CaseCost" id="CaseCostResult">
+        <result property="caseId"        column="case_id"        />
+        <result property="caseName"      column="case_name"      />
+        <result property="deptName"      column="dept_name"      />
+        <result property="caseCode"      column="case_code"      />
+        <result property="totalCost"     column="total_cost"     />
+        <result property="drugCost"      column="drug_cost"      />
+        <result property="materialCost"  column="material_cost"  />
+        <result property="serviceCost"   column="service_cost"   />
+        <result property="avgStayDays"   column="avg_stay_days"  />
+        <result property="costDate"      column="cost_date"      />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"        column="remark"         />
+    </resultMap>
+
+    <sql id="selectCaseCostVo">
+        select case_id, case_name, dept_name, case_code, total_cost, drug_cost,
+               material_cost, service_cost, avg_stay_days, cost_date,
+               create_by, create_time, update_by, update_time, remark
+        from drm_case_cost
+    </sql>
+
+    <select id="selectCaseCostList" parameterType="CaseCost" resultMap="CaseCostResult">
+        <include refid="selectCaseCostVo"/>
+        <where>
+            <if test="caseName != null and caseName != ''"> and case_name like concat('%', #{caseName}, '%')</if>
+            <if test="deptName != null and deptName != ''"> and dept_name = #{deptName}</if>
+            <if test="costDate != null and costDate != ''"> and cost_date = #{costDate}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectCaseCostById" parameterType="Long" resultMap="CaseCostResult">
+        <include refid="selectCaseCostVo"/>
+        where case_id = #{caseId}
+    </select>
+
+    <insert id="insertCaseCost" parameterType="CaseCost" useGeneratedKeys="true" keyProperty="caseId">
+        insert into drm_case_cost
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseName != null and caseName != ''">case_name,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="caseCode != null">case_code,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="drugCost != null">drug_cost,</if>
+            <if test="materialCost != null">material_cost,</if>
+            <if test="serviceCost != null">service_cost,</if>
+            <if test="avgStayDays != null">avg_stay_days,</if>
+            <if test="costDate != null">cost_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseName != null and caseName != ''">#{caseName},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="caseCode != null">#{caseCode},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="drugCost != null">#{drugCost},</if>
+            <if test="materialCost != null">#{materialCost},</if>
+            <if test="serviceCost != null">#{serviceCost},</if>
+            <if test="avgStayDays != null">#{avgStayDays},</if>
+            <if test="costDate != null">#{costDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateCaseCost" parameterType="CaseCost">
+        update drm_case_cost
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseName != null and caseName != ''">case_name = #{caseName},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="caseCode != null">case_code = #{caseCode},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="drugCost != null">drug_cost = #{drugCost},</if>
+            <if test="materialCost != null">material_cost = #{materialCost},</if>
+            <if test="serviceCost != null">service_cost = #{serviceCost},</if>
+            <if test="avgStayDays != null">avg_stay_days = #{avgStayDays},</if>
+            <if test="costDate != null">cost_date = #{costDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where case_id = #{caseId}
+    </update>
+
+    <delete id="deleteCaseCostById" parameterType="Long">
+        delete from drm_case_cost where case_id = #{caseId}
+    </delete>
+
+    <delete id="deleteCaseCostByIds" parameterType="Long">
+        delete from drm_case_cost where case_id in
+        <foreach item="caseId" collection="array" open="(" separator="," close=")">
+            #{caseId}
+        </foreach>
+    </delete>
+</mapper>

@@ -36,7 +36,7 @@ public class DataQualityController extends BaseController
     /**
      * 获取数据质量列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:list')")
     @GetMapping("/list")
     public TableDataInfo list(DataQuality dataquality)
     {
@@ -45,7 +45,7 @@ public class DataQualityController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:export')")
     @Log(title = "数据质量", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DataQuality dataquality)
@@ -55,14 +55,14 @@ public class DataQualityController extends BaseController
         util.exportExcel(response, list, "数据质量数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:query')")
     @GetMapping(value = "/{qualityId}")
     public AjaxResult getInfo(@PathVariable Long qualityId)
     {
         return success(dataqualityService.selectDataQualityById(qualityId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:add')")
     @Log(title = "数据质量", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DataQuality dataquality)
@@ -71,7 +71,7 @@ public class DataQualityController extends BaseController
         return toAjax(dataqualityService.insertDataQuality(dataquality));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:edit')")
     @Log(title = "数据质量", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DataQuality dataquality)
@@ -80,7 +80,7 @@ public class DataQualityController extends BaseController
         return toAjax(dataqualityService.updateDataQuality(dataquality));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/dataQuality:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/dataQuality:remove')")
     @Log(title = "数据质量", businessType = BusinessType.DELETE)
     @DeleteMapping("/{qualityIds}")
     public AjaxResult remove(@PathVariable Long[] qualityIds)

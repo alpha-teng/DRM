@@ -6,4 +6,5 @@ export const FinanceReportApi = {
   add: (data) => request({ url: '/drm/finance/financeReport', method: 'post', data }),
   update: (data) => request({ url: '/drm/finance/financeReport', method: 'put', data }),
   remove: (ids) => request({ url: `/drm/finance/financeReport/${ids}`, method: 'delete' }),
+  export: (params) => request({ url: '/drm/finance/financeReport/export', method: 'post', params }),
 }

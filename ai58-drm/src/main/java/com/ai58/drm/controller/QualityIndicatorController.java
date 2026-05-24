@@ -36,7 +36,7 @@ public class QualityIndicatorController extends BaseController
     /**
      * 获取质量指标列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:list')")
     @GetMapping("/list")
     public TableDataInfo list(QualityIndicator qualityindicator)
     {
@@ -45,7 +45,7 @@ public class QualityIndicatorController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:export')")
     @Log(title = "质量指标", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, QualityIndicator qualityindicator)
@@ -55,14 +55,14 @@ public class QualityIndicatorController extends BaseController
         util.exportExcel(response, list, "质量指标数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:query')")
     @GetMapping(value = "/{indicatorId}")
     public AjaxResult getInfo(@PathVariable Long indicatorId)
     {
         return success(qualityindicatorService.selectQualityIndicatorById(indicatorId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:add')")
     @Log(title = "质量指标", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody QualityIndicator qualityindicator)
@@ -71,7 +71,7 @@ public class QualityIndicatorController extends BaseController
         return toAjax(qualityindicatorService.insertQualityIndicator(qualityindicator));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:edit')")
     @Log(title = "质量指标", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody QualityIndicator qualityindicator)
@@ -80,7 +80,7 @@ public class QualityIndicatorController extends BaseController
         return toAjax(qualityindicatorService.updateQualityIndicator(qualityindicator));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityIndicator:remove')")
     @Log(title = "质量指标", businessType = BusinessType.DELETE)
     @DeleteMapping("/{indicatorIds}")
     public AjaxResult remove(@PathVariable Long[] indicatorIds)

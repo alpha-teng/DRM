@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { AdverseeventApi } from '@/api/drm/adverseEvent'
+import { AdverseEventApi } from '@/api/drm/adverseEvent'
 
 export default {
   name: "Adverseevent",
@@ -80,7 +80,7 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      AdverseeventApi.list(this.queryParams).then(res => {
+      AdverseEventApi.list(this.queryParams).then(res => {
         this.dataList = res.rows || []; this.total = res.total || 0; this.loading = false
       })
     },
@@ -91,27 +91,26 @@ export default {
     handleUpdate(row) {
       this.reset()
       const id = row ? row.id : this.ids[0]
-      AdverseeventApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
+      AdverseEventApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
     },
     handleDelete(row) {
       const ids = row ? [row.id] : this.ids
       this.$confirm('是否确认删除选中的数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => AdverseeventApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
+        .then(() => AdverseEventApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
     },
     handleExport() {
       this.$confirm('是否确认导出所有数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => { this.loading = true; AdverseeventApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
+        .then(() => { this.loading = true; AdverseEventApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
     },
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const action = this.form.id ? AdverseeventApi.update(this.form) : AdverseeventApi.add(this.form)
+          const action = this.form.id ? AdverseEventApi.update(this.form) : AdverseEventApi.add(this.form)
           action.then(() => { this.$message.success(this.form.id ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
         }
       })
     },
     reset() { this.form = { status: '0' }; this.$nextTick(() => { if (this.$refs.form) this.$refs.form.clearValidate() }) },
-    parseTime(time) { return time ? this.$parseTime(time) : '' }
   }
 }
 </script>

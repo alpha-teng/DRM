@@ -36,7 +36,7 @@ public class InpatientStatsController extends BaseController
     /**
      * 获取住院运营分析列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:list')")
     @GetMapping("/list")
     public TableDataInfo list(InpatientStats inpatientstats)
     {
@@ -45,7 +45,7 @@ public class InpatientStatsController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:export')")
     @Log(title = "住院运营分析", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, InpatientStats inpatientstats)
@@ -55,14 +55,14 @@ public class InpatientStatsController extends BaseController
         util.exportExcel(response, list, "住院运营分析数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:query')")
     @GetMapping(value = "/{statsId}")
     public AjaxResult getInfo(@PathVariable Long statsId)
     {
         return success(inpatientstatsService.selectInpatientStatsById(statsId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:add')")
     @Log(title = "住院运营分析", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody InpatientStats inpatientstats)
@@ -71,7 +71,7 @@ public class InpatientStatsController extends BaseController
         return toAjax(inpatientstatsService.insertInpatientStats(inpatientstats));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:edit')")
     @Log(title = "住院运营分析", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody InpatientStats inpatientstats)
@@ -80,7 +80,7 @@ public class InpatientStatsController extends BaseController
         return toAjax(inpatientstatsService.updateInpatientStats(inpatientstats));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/inpatientStats:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/inpatientStats:remove')")
     @Log(title = "住院运营分析", businessType = BusinessType.DELETE)
     @DeleteMapping("/{statsIds}")
     public AjaxResult remove(@PathVariable Long[] statsIds)

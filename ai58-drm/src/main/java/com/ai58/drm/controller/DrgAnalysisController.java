@@ -36,7 +36,7 @@ public class DrgAnalysisController extends BaseController
     /**
      * 获取DRG分析列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:list')")
     @GetMapping("/list")
     public TableDataInfo list(DrgAnalysis drganalysis)
     {
@@ -45,7 +45,7 @@ public class DrgAnalysisController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:export')")
     @Log(title = "DRG分析", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DrgAnalysis drganalysis)
@@ -55,14 +55,14 @@ public class DrgAnalysisController extends BaseController
         util.exportExcel(response, list, "DRG分析数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:query')")
     @GetMapping(value = "/{analysisId}")
     public AjaxResult getInfo(@PathVariable Long analysisId)
     {
         return success(drganalysisService.selectDrgAnalysisById(analysisId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:add')")
     @Log(title = "DRG分析", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DrgAnalysis drganalysis)
@@ -71,7 +71,7 @@ public class DrgAnalysisController extends BaseController
         return toAjax(drganalysisService.insertDrgAnalysis(drganalysis));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:edit')")
     @Log(title = "DRG分析", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DrgAnalysis drganalysis)
@@ -80,7 +80,7 @@ public class DrgAnalysisController extends BaseController
         return toAjax(drganalysisService.updateDrgAnalysis(drganalysis));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgAnalysis:remove')")
     @Log(title = "DRG分析", businessType = BusinessType.DELETE)
     @DeleteMapping("/{analysisIds}")
     public AjaxResult remove(@PathVariable Long[] analysisIds)

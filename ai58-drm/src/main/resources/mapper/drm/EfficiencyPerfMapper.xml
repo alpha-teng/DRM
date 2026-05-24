@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.EfficiencyPerfMapper">
+    <resultMap type="EfficiencyPerf" id="EfficiencyPerfResult">
+        <result property="perfId"             column="perf_id"             />
+        <result property="deptName"           column="dept_name"           />
+        <result property="efficiencyScore"    column="efficiency_score"    />
+        <result property="workLoad"           column="work_load"           />
+        <result property="bedUtilization"     column="bed_utilization"     />
+        <result property="equipUtilization"   column="equip_utilization"   />
+        <result property="calcDate"           column="calc_date"           />
+        <result property="status"             column="status"              />
+        <result property="createBy"           column="create_by"           />
+        <result property="createTime"         column="create_time"         />
+        <result property="updateBy"           column="update_by"           />
+        <result property="updateTime"         column="update_time"         />
+        <result property="remark"             column="remark"              />
+    </resultMap>
+
+    <sql id="selectEfficiencyPerfVo">
+        select perf_id, dept_name, efficiency_score, work_load, bed_utilization, equip_utilization,
+               calc_date, status, create_by, create_time, update_by, update_time, remark
+        from drm_efficiency_perf
+    </sql>
+
+    <select id="selectEfficiencyPerfList" parameterType="EfficiencyPerf" resultMap="EfficiencyPerfResult">
+        <include refid="selectEfficiencyPerfVo"/>
+        <where>
+            <if test="deptName != null and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="calcDate != null and calcDate != ''"> and calc_date = #{calcDate}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectEfficiencyPerfById" parameterType="Long" resultMap="EfficiencyPerfResult">
+        <include refid="selectEfficiencyPerfVo"/>
+        where perf_id = #{perfId}
+    </select>
+
+    <insert id="insertEfficiencyPerf" parameterType="EfficiencyPerf" useGeneratedKeys="true" keyProperty="perfId">
+        insert into drm_efficiency_perf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="efficiencyScore != null">efficiency_score,</if>
+            <if test="workLoad != null">work_load,</if>
+            <if test="bedUtilization != null">bed_utilization,</if>
+            <if test="equipUtilization != null">equip_utilization,</if>
+            <if test="calcDate != null">calc_date,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="efficiencyScore != null">#{efficiencyScore},</if>
+            <if test="workLoad != null">#{workLoad},</if>
+            <if test="bedUtilization != null">#{bedUtilization},</if>
+            <if test="equipUtilization != null">#{equipUtilization},</if>
+            <if test="calcDate != null">#{calcDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateEfficiencyPerf" parameterType="EfficiencyPerf">
+        update drm_efficiency_perf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="efficiencyScore != null">efficiency_score = #{efficiencyScore},</if>
+            <if test="workLoad != null">work_load = #{workLoad},</if>
+            <if test="bedUtilization != null">bed_utilization = #{bedUtilization},</if>
+            <if test="equipUtilization != null">equip_utilization = #{equipUtilization},</if>
+            <if test="calcDate != null">calc_date = #{calcDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where perf_id = #{perfId}
+    </update>
+
+    <delete id="deleteEfficiencyPerfById" parameterType="Long">
+        delete from drm_efficiency_perf where perf_id = #{perfId}
+    </delete>
+
+    <delete id="deleteEfficiencyPerfByIds" parameterType="Long">
+        delete from drm_efficiency_perf where perf_id in
+        <foreach item="perfId" collection="array" open="(" separator="," close=")">
+            #{perfId}
+        </foreach>
+    </delete>
+</mapper>

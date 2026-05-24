@@ -36,7 +36,7 @@ public class EarlyWarningController extends BaseController
     /**
      * 获取预警中心列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:list')")
     @GetMapping("/list")
     public TableDataInfo list(EarlyWarning earlywarning)
     {
@@ -45,7 +45,7 @@ public class EarlyWarningController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:export')")
     @Log(title = "预警中心", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, EarlyWarning earlywarning)
@@ -55,14 +55,14 @@ public class EarlyWarningController extends BaseController
         util.exportExcel(response, list, "预警中心数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:query')")
     @GetMapping(value = "/{warningId}")
     public AjaxResult getInfo(@PathVariable Long warningId)
     {
         return success(earlywarningService.selectEarlyWarningById(warningId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:add')")
     @Log(title = "预警中心", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody EarlyWarning earlywarning)
@@ -71,7 +71,7 @@ public class EarlyWarningController extends BaseController
         return toAjax(earlywarningService.insertEarlyWarning(earlywarning));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:edit')")
     @Log(title = "预警中心", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody EarlyWarning earlywarning)
@@ -80,7 +80,7 @@ public class EarlyWarningController extends BaseController
         return toAjax(earlywarningService.updateEarlyWarning(earlywarning));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/earlyWarning:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/earlyWarning:remove')")
     @Log(title = "预警中心", businessType = BusinessType.DELETE)
     @DeleteMapping("/{warningIds}")
     public AjaxResult remove(@PathVariable Long[] warningIds)

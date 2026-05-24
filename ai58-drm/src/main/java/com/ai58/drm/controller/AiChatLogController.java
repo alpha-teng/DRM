@@ -36,7 +36,7 @@ public class AiChatLogController extends BaseController
     /**
      * 获取AI问答日志列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:list')")
     @GetMapping("/list")
     public TableDataInfo list(AiChatLog aichatlog)
     {
@@ -45,7 +45,7 @@ public class AiChatLogController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:export')")
     @Log(title = "AI问答日志", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AiChatLog aichatlog)
@@ -55,14 +55,14 @@ public class AiChatLogController extends BaseController
         util.exportExcel(response, list, "AI问答日志数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:query')")
     @GetMapping(value = "/{logId}")
     public AjaxResult getInfo(@PathVariable Long logId)
     {
         return success(aichatlogService.selectAiChatLogById(logId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:add')")
     @Log(title = "AI问答日志", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody AiChatLog aichatlog)
@@ -71,7 +71,7 @@ public class AiChatLogController extends BaseController
         return toAjax(aichatlogService.insertAiChatLog(aichatlog));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:edit')")
     @Log(title = "AI问答日志", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody AiChatLog aichatlog)
@@ -80,7 +80,7 @@ public class AiChatLogController extends BaseController
         return toAjax(aichatlogService.updateAiChatLog(aichatlog));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/aiChatLog:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/aiChatLog:remove')")
     @Log(title = "AI问答日志", businessType = BusinessType.DELETE)
     @DeleteMapping("/{logIds}")
     public AjaxResult remove(@PathVariable Long[] logIds)

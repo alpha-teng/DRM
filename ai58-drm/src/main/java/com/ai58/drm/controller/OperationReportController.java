@@ -36,7 +36,7 @@ public class OperationReportController extends BaseController
     /**
      * 获取运营报告列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:list')")
     @GetMapping("/list")
     public TableDataInfo list(OperationReport operationreport)
     {
@@ -45,7 +45,7 @@ public class OperationReportController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:export')")
     @Log(title = "运营报告", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, OperationReport operationreport)
@@ -55,14 +55,14 @@ public class OperationReportController extends BaseController
         util.exportExcel(response, list, "运营报告数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:query')")
     @GetMapping(value = "/{reportId}")
     public AjaxResult getInfo(@PathVariable Long reportId)
     {
         return success(operationreportService.selectOperationReportById(reportId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:add')")
     @Log(title = "运营报告", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OperationReport operationreport)
@@ -71,7 +71,7 @@ public class OperationReportController extends BaseController
         return toAjax(operationreportService.insertOperationReport(operationreport));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:edit')")
     @Log(title = "运营报告", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OperationReport operationreport)
@@ -80,7 +80,7 @@ public class OperationReportController extends BaseController
         return toAjax(operationreportService.updateOperationReport(operationreport));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/operationReport:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/operationReport:remove')")
     @Log(title = "运营报告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{reportIds}")
     public AjaxResult remove(@PathVariable Long[] reportIds)

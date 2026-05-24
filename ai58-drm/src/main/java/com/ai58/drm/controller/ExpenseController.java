@@ -36,7 +36,7 @@ public class ExpenseController extends BaseController
     /**
      * 获取支出管理列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/expense:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:list')")
     @GetMapping("/list")
     public TableDataInfo list(Expense expense)
     {
@@ -45,7 +45,7 @@ public class ExpenseController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/expense:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:export')")
     @Log(title = "支出管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Expense expense)
@@ -55,14 +55,14 @@ public class ExpenseController extends BaseController
         util.exportExcel(response, list, "支出管理数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/expense:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:query')")
     @GetMapping(value = "/{expenseId}")
     public AjaxResult getInfo(@PathVariable Long expenseId)
     {
         return success(expenseService.selectExpenseById(expenseId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/expense:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:add')")
     @Log(title = "支出管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Expense expense)
@@ -71,7 +71,7 @@ public class ExpenseController extends BaseController
         return toAjax(expenseService.insertExpense(expense));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/expense:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:edit')")
     @Log(title = "支出管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Expense expense)
@@ -80,7 +80,7 @@ public class ExpenseController extends BaseController
         return toAjax(expenseService.updateExpense(expense));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/expense:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/expense:remove')")
     @Log(title = "支出管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{expenseIds}")
     public AjaxResult remove(@PathVariable Long[] expenseIds)

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.ProjectCostMapper">
+    <resultMap type="ProjectCost" id="ProjectCostResult">
+        <result property="projectId"     column="project_id"     />
+        <result property="projectName"   column="project_name"   />
+        <result property="projectType"   column="project_type"   />
+        <result property="deptName"      column="dept_name"      />
+        <result property="budgetAmount"  column="budget_amount"  />
+        <result property="actualAmount"  column="actual_amount"  />
+        <result property="costDate"      column="cost_date"      />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"        column="remark"         />
+    </resultMap>
+
+    <sql id="selectProjectCostVo">
+        select project_id, project_name, project_type, dept_name, budget_amount, actual_amount, cost_date,
+               create_by, create_time, update_by, update_time, remark
+        from drm_project_cost
+    </sql>
+
+    <select id="selectProjectCostList" parameterType="ProjectCost" resultMap="ProjectCostResult">
+        <include refid="selectProjectCostVo"/>
+        <where>
+            <if test="projectName != null and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="deptName != null and deptName != ''"> and dept_name = #{deptName}</if>
+            <if test="costDate != null and costDate != ''"> and cost_date = #{costDate}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectProjectCostById" parameterType="Long" resultMap="ProjectCostResult">
+        <include refid="selectProjectCostVo"/>
+        where project_id = #{projectId}
+    </select>
+
+    <insert id="insertProjectCost" parameterType="ProjectCost" useGeneratedKeys="true" keyProperty="projectId">
+        insert into drm_project_cost
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">project_name,</if>
+            <if test="projectType != null">project_type,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="budgetAmount != null">budget_amount,</if>
+            <if test="actualAmount != null">actual_amount,</if>
+            <if test="costDate != null">cost_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">#{projectName},</if>
+            <if test="projectType != null">#{projectType},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="budgetAmount != null">#{budgetAmount},</if>
+            <if test="actualAmount != null">#{actualAmount},</if>
+            <if test="costDate != null">#{costDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateProjectCost" parameterType="ProjectCost">
+        update drm_project_cost
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">project_name = #{projectName},</if>
+            <if test="projectType != null">project_type = #{projectType},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="budgetAmount != null">budget_amount = #{budgetAmount},</if>
+            <if test="actualAmount != null">actual_amount = #{actualAmount},</if>
+            <if test="costDate != null">cost_date = #{costDate},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteProjectCostById" parameterType="Long">
+        delete from drm_project_cost where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteProjectCostByIds" parameterType="Long">
+        delete from drm_project_cost where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+</mapper>

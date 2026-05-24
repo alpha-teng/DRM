@@ -39,10 +39,10 @@
             <el-table-column label="指标1" align="center" prop="value1" />
             <el-table-column label="指标2" align="center" prop="value2" />
             <el-table-column label="同比" align="center" prop="yoy">
-              <template slot-scope="scope"><span :class="scope.row.yoy >= 0 ? 'text-red' : 'text-green'">{ scope.row.yoy }%</span></template>
+              <template slot-scope="scope"><span :class="scope.row.yoy >= 0 ? 'text-red' : 'text-green'">{{ scope.row.yoy }}%</span></template>
             </el-table-column>
             <el-table-column label="环比" align="center" prop="qoq">
-              <template slot-scope="scope"><span :class="scope.row.qoq >= 0 ? 'text-red' : 'text-green'">{ scope.row.qoq }%</span></template>
+              <template slot-scope="scope"><span :class="scope.row.qoq >= 0 ? 'text-red' : 'text-green'">{{ scope.row.qoq }}%</span></template>
             </el-table-column>
           </el-table>
           <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getData" />

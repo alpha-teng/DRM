@@ -36,7 +36,7 @@ public class PrescriptionReviewController extends BaseController
     /**
      * 获取处方点评列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:list')")
     @GetMapping("/list")
     public TableDataInfo list(PrescriptionReview prescriptionreview)
     {
@@ -45,7 +45,7 @@ public class PrescriptionReviewController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:export')")
     @Log(title = "处方点评", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, PrescriptionReview prescriptionreview)
@@ -55,14 +55,14 @@ public class PrescriptionReviewController extends BaseController
         util.exportExcel(response, list, "处方点评数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:query')")
     @GetMapping(value = "/{reviewId}")
     public AjaxResult getInfo(@PathVariable Long reviewId)
     {
         return success(prescriptionreviewService.selectPrescriptionReviewById(reviewId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:add')")
     @Log(title = "处方点评", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PrescriptionReview prescriptionreview)
@@ -71,7 +71,7 @@ public class PrescriptionReviewController extends BaseController
         return toAjax(prescriptionreviewService.insertPrescriptionReview(prescriptionreview));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:edit')")
     @Log(title = "处方点评", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PrescriptionReview prescriptionreview)
@@ -80,7 +80,7 @@ public class PrescriptionReviewController extends BaseController
         return toAjax(prescriptionreviewService.updatePrescriptionReview(prescriptionreview));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/prescriptionReview:remove')")
     @Log(title = "处方点评", businessType = BusinessType.DELETE)
     @DeleteMapping("/{reviewIds}")
     public AjaxResult remove(@PathVariable Long[] reviewIds)

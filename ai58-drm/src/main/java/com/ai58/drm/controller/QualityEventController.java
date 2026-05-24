@@ -36,7 +36,7 @@ public class QualityEventController extends BaseController
     /**
      * 获取不良事件列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:list')")
     @GetMapping("/list")
     public TableDataInfo list(QualityEvent qualityevent)
     {
@@ -45,7 +45,7 @@ public class QualityEventController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:export')")
     @Log(title = "不良事件", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, QualityEvent qualityevent)
@@ -55,14 +55,14 @@ public class QualityEventController extends BaseController
         util.exportExcel(response, list, "不良事件数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:query')")
     @GetMapping(value = "/{eventId}")
     public AjaxResult getInfo(@PathVariable Long eventId)
     {
         return success(qualityeventService.selectQualityEventById(eventId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:add')")
     @Log(title = "不良事件", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody QualityEvent qualityevent)
@@ -71,7 +71,7 @@ public class QualityEventController extends BaseController
         return toAjax(qualityeventService.insertQualityEvent(qualityevent));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:edit')")
     @Log(title = "不良事件", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody QualityEvent qualityevent)
@@ -80,7 +80,7 @@ public class QualityEventController extends BaseController
         return toAjax(qualityeventService.updateQualityEvent(qualityevent));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/qualityEvent:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/qualityEvent:remove')")
     @Log(title = "不良事件", businessType = BusinessType.DELETE)
     @DeleteMapping("/{eventIds}")
     public AjaxResult remove(@PathVariable Long[] eventIds)

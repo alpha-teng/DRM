@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.FinanceReportMapper">
+
+    <resultMap type="FinanceReport" id="FinanceReportResult">
+        <result property="reportId"        column="report_id"        />
+        <result property="reportTitle"     column="report_title"     />
+        <result property="reportType"      column="report_type"      />
+        <result property="reportPeriod"    column="report_period"    />
+        <result property="targetDept"      column="target_dept"      />
+        <result property="totalIncome"     column="total_income"     />
+        <result property="totalExpense"    column="total_expense"    />
+        <result property="balance"         column="balance"          />
+        <result property="incomeGrowth"    column="income_growth"    />
+        <result property="expenseGrowth"   column="expense_growth"   />
+        <result property="content"         column="content"          />
+        <result property="status"          column="status"           />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+    </resultMap>
+
+    <sql id="selectFinanceReportVo">
+        select report_id, report_title, report_type, report_period, target_dept,
+               total_income, total_expense, balance, income_growth, expense_growth,
+               content, status, create_by, create_time, update_by, update_time, remark
+        from drm_finance_report
+    </sql>
+
+    <select id="selectFinanceReportList" parameterType="FinanceReport" resultMap="FinanceReportResult">
+        <include refid="selectFinanceReportVo"/>
+        <where>
+            <if test="reportTitle != null and reportTitle != ''"> and report_title like concat('%', #{reportTitle}, '%')</if>
+            <if test="reportType != null and reportType != ''"> and report_type = #{reportType}</if>
+            <if test="reportPeriod != null and reportPeriod != ''"> and report_period = #{reportPeriod}</if>
+            <if test="targetDept != null and targetDept != ''"> and target_dept = #{targetDept}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectFinanceReportById" parameterType="Long" resultMap="FinanceReportResult">
+        <include refid="selectFinanceReportVo"/>
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertFinanceReport" parameterType="FinanceReport" useGeneratedKeys="true" keyProperty="reportId">
+        insert into drm_finance_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">report_title,</if>
+            <if test="reportType != null and reportType != ''">report_type,</if>
+            <if test="reportPeriod != null and reportPeriod != ''">report_period,</if>
+            <if test="targetDept != null">target_dept,</if>
+            <if test="totalIncome != null">total_income,</if>
+            <if test="totalExpense != null">total_expense,</if>
+            <if test="balance != null">balance,</if>
+            <if test="incomeGrowth != null">income_growth,</if>
+            <if test="expenseGrowth != null">expense_growth,</if>
+            <if test="content != null">content,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">#{reportTitle},</if>
+            <if test="reportType != null and reportType != ''">#{reportType},</if>
+            <if test="reportPeriod != null and reportPeriod != ''">#{reportPeriod},</if>
+            <if test="targetDept != null">#{targetDept},</if>
+            <if test="totalIncome != null">#{totalIncome},</if>
+            <if test="totalExpense != null">#{totalExpense},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="incomeGrowth != null">#{incomeGrowth},</if>
+            <if test="expenseGrowth != null">#{expenseGrowth},</if>
+            <if test="content != null">#{content},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateFinanceReport" parameterType="FinanceReport">
+        update drm_finance_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportTitle != null and reportTitle != ''">report_title = #{reportTitle},</if>
+            <if test="reportType != null and reportType != ''">report_type = #{reportType},</if>
+            <if test="reportPeriod != null and reportPeriod != ''">report_period = #{reportPeriod},</if>
+            <if test="targetDept != null">target_dept = #{targetDept},</if>
+            <if test="totalIncome != null">total_income = #{totalIncome},</if>
+            <if test="totalExpense != null">total_expense = #{totalExpense},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="incomeGrowth != null">income_growth = #{incomeGrowth},</if>
+            <if test="expenseGrowth != null">expense_growth = #{expenseGrowth},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteFinanceReportById" parameterType="Long">
+        delete from drm_finance_report where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteFinanceReportByIds" parameterType="Long">
+        delete from drm_finance_report where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>

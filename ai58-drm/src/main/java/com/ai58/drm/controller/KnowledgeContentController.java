@@ -36,7 +36,7 @@ public class KnowledgeContentController extends BaseController
     /**
      * 获取知识内容列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:list')")
     @GetMapping("/list")
     public TableDataInfo list(KnowledgeContent knowledgecontent)
     {
@@ -45,7 +45,7 @@ public class KnowledgeContentController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:export')")
     @Log(title = "知识内容", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, KnowledgeContent knowledgecontent)
@@ -55,14 +55,14 @@ public class KnowledgeContentController extends BaseController
         util.exportExcel(response, list, "知识内容数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:query')")
     @GetMapping(value = "/{contentId}")
     public AjaxResult getInfo(@PathVariable Long contentId)
     {
         return success(knowledgecontentService.selectKnowledgeContentById(contentId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:add')")
     @Log(title = "知识内容", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody KnowledgeContent knowledgecontent)
@@ -71,7 +71,7 @@ public class KnowledgeContentController extends BaseController
         return toAjax(knowledgecontentService.insertKnowledgeContent(knowledgecontent));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:edit')")
     @Log(title = "知识内容", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody KnowledgeContent knowledgecontent)
@@ -80,7 +80,7 @@ public class KnowledgeContentController extends BaseController
         return toAjax(knowledgecontentService.updateKnowledgeContent(knowledgecontent));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeContent:remove')")
     @Log(title = "知识内容", businessType = BusinessType.DELETE)
     @DeleteMapping("/{contentIds}")
     public AjaxResult remove(@PathVariable Long[] contentIds)

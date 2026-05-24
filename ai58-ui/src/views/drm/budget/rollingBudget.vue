@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { RollingbudgetApi } from '@/api/drm/rollingBudget'
+import { RollingBudgetApi } from '@/api/drm/rollingBudget'
 
 export default {
   name: "Rollingbudget",
@@ -80,7 +80,7 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      RollingbudgetApi.list(this.queryParams).then(res => {
+      RollingBudgetApi.list(this.queryParams).then(res => {
         this.dataList = res.rows || []; this.total = res.total || 0; this.loading = false
       })
     },
@@ -91,27 +91,26 @@ export default {
     handleUpdate(row) {
       this.reset()
       const id = row ? row.id : this.ids[0]
-      RollingbudgetApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
+      RollingBudgetApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
     },
     handleDelete(row) {
       const ids = row ? [row.id] : this.ids
       this.$confirm('是否确认删除选中的数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => RollingbudgetApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
+        .then(() => RollingBudgetApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
     },
     handleExport() {
       this.$confirm('是否确认导出所有数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => { this.loading = true; RollingbudgetApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
+        .then(() => { this.loading = true; RollingBudgetApi.export(this.queryParams).then(() => { this.loading = false; this.$message.success('导出成功') }).catch(() => { this.loading = false }) })
     },
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const action = this.form.id ? RollingbudgetApi.update(this.form) : RollingbudgetApi.add(this.form)
+          const action = this.form.id ? RollingBudgetApi.update(this.form) : RollingBudgetApi.add(this.form)
           action.then(() => { this.$message.success(this.form.id ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
         }
       })
     },
     reset() { this.form = { status: '0' }; this.$nextTick(() => { if (this.$refs.form) this.$refs.form.clearValidate() }) },
-    parseTime(time) { return time ? this.$parseTime(time) : '' }
   }
 }
 </script>

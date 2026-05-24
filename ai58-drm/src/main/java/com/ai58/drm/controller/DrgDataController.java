@@ -36,7 +36,7 @@ public class DrgDataController extends BaseController
     /**
      * 获取DRG数据列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/drgData:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:list')")
     @GetMapping("/list")
     public TableDataInfo list(DrgData drgdata)
     {
@@ -45,7 +45,7 @@ public class DrgDataController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgData:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:export')")
     @Log(title = "DRG数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, DrgData drgdata)
@@ -55,14 +55,14 @@ public class DrgDataController extends BaseController
         util.exportExcel(response, list, "DRG数据数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgData:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:query')")
     @GetMapping(value = "/{drgId}")
     public AjaxResult getInfo(@PathVariable Long drgId)
     {
         return success(drgdataService.selectDrgDataById(drgId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgData:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:add')")
     @Log(title = "DRG数据", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DrgData drgdata)
@@ -71,7 +71,7 @@ public class DrgDataController extends BaseController
         return toAjax(drgdataService.insertDrgData(drgdata));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgData:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:edit')")
     @Log(title = "DRG数据", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DrgData drgdata)
@@ -80,7 +80,7 @@ public class DrgDataController extends BaseController
         return toAjax(drgdataService.updateDrgData(drgdata));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/drgData:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/drgData:remove')")
     @Log(title = "DRG数据", businessType = BusinessType.DELETE)
     @DeleteMapping("/{drgIds}")
     public AjaxResult remove(@PathVariable Long[] drgIds)

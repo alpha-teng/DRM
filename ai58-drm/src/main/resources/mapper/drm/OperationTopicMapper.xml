@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.OperationTopicMapper">
+
+    <resultMap type="OperationTopic" id="OperationTopicResult">
+        <result property="topicId"       column="topic_id"       />
+        <result property="topicName"     column="topic_name"     />
+        <result property="topicType"     column="topic_type"     />
+        <result property="targetDept"    column="target_dept"    />
+        <result property="analysisModel" column="analysis_model" />
+        <result property="dataConfig"    column="data_config"    />
+        <result property="chartConfig"   column="chart_config"   />
+        <result property="status"        column="status"         />
+        <result property="aiInsights"    column="ai_insights"    />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"        column="remark"         />
+    </resultMap>
+
+    <sql id="selectOperationTopicVo">
+        select topic_id, topic_name, topic_type, target_dept, analysis_model,
+               data_config, chart_config, status, ai_insights,
+               create_by, create_time, update_by, update_time, remark
+        from drm_operation_topic
+    </sql>
+
+    <select id="selectOperationTopicList" parameterType="OperationTopic" resultMap="OperationTopicResult">
+        <include refid="selectOperationTopicVo"/>
+        <where>
+            <if test="topicName != null and topicName != ''"> and topic_name like concat('%', #{topicName}, '%')</if>
+            <if test="topicType != null and topicType != ''"> and topic_type = #{topicType}</if>
+            <if test="targetDept != null and targetDept != ''"> and target_dept = #{targetDept}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectOperationTopicById" parameterType="Long" resultMap="OperationTopicResult">
+        <include refid="selectOperationTopicVo"/>
+        where topic_id = #{topicId}
+    </select>
+
+    <insert id="insertOperationTopic" parameterType="OperationTopic" useGeneratedKeys="true" keyProperty="topicId">
+        insert into drm_operation_topic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="topicName != null and topicName != ''">topic_name,</if>
+            <if test="topicType != null and topicType != ''">topic_type,</if>
+            <if test="targetDept != null">target_dept,</if>
+            <if test="analysisModel != null">analysis_model,</if>
+            <if test="dataConfig != null">data_config,</if>
+            <if test="chartConfig != null">chart_config,</if>
+            <if test="status != null">status,</if>
+            <if test="aiInsights != null">ai_insights,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="topicName != null and topicName != ''">#{topicName},</if>
+            <if test="topicType != null and topicType != ''">#{topicType},</if>
+            <if test="targetDept != null">#{targetDept},</if>
+            <if test="analysisModel != null">#{analysisModel},</if>
+            <if test="dataConfig != null">#{dataConfig},</if>
+            <if test="chartConfig != null">#{chartConfig},</if>
+            <if test="status != null">#{status},</if>
+            <if test="aiInsights != null">#{aiInsights},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateOperationTopic" parameterType="OperationTopic">
+        update drm_operation_topic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="topicName != null and topicName != ''">topic_name = #{topicName},</if>
+            <if test="topicType != null and topicType != ''">topic_type = #{topicType},</if>
+            <if test="targetDept != null">target_dept = #{targetDept},</if>
+            <if test="analysisModel != null">analysis_model = #{analysisModel},</if>
+            <if test="dataConfig != null">data_config = #{dataConfig},</if>
+            <if test="chartConfig != null">chart_config = #{chartConfig},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="aiInsights != null">ai_insights = #{aiInsights},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where topic_id = #{topicId}
+    </update>
+
+    <delete id="deleteOperationTopicById" parameterType="Long">
+        delete from drm_operation_topic where topic_id = #{topicId}
+    </delete>
+
+    <delete id="deleteOperationTopicByIds" parameterType="Long">
+        delete from drm_operation_topic where topic_id in
+        <foreach item="topicId" collection="array" open="(" separator="," close=")">
+            #{topicId}
+        </foreach>
+    </delete>
+</mapper>

@@ -36,7 +36,7 @@ public class IncomeController extends BaseController
     /**
      * 获取收入管理列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/income:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:list')")
     @GetMapping("/list")
     public TableDataInfo list(Income income)
     {
@@ -45,7 +45,7 @@ public class IncomeController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/income:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:export')")
     @Log(title = "收入管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Income income)
@@ -55,14 +55,14 @@ public class IncomeController extends BaseController
         util.exportExcel(response, list, "收入管理数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/income:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:query')")
     @GetMapping(value = "/{incomeId}")
     public AjaxResult getInfo(@PathVariable Long incomeId)
     {
         return success(incomeService.selectIncomeById(incomeId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/income:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:add')")
     @Log(title = "收入管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Income income)
@@ -71,7 +71,7 @@ public class IncomeController extends BaseController
         return toAjax(incomeService.insertIncome(income));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/income:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:edit')")
     @Log(title = "收入管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Income income)
@@ -80,7 +80,7 @@ public class IncomeController extends BaseController
         return toAjax(incomeService.updateIncome(income));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/income:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/income:remove')")
     @Log(title = "收入管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{incomeIds}")
     public AjaxResult remove(@PathVariable Long[] incomeIds)

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.DeptCostMapper">
+    <resultMap type="DeptCost" id="DeptCostResult">
+        <result property="deptId"        column="dept_id"        />
+        <result property="deptName"      column="dept_name"      />
+        <result property="costDate"      column="cost_date"      />
+        <result property="personnelCost" column="personnel_cost" />
+        <result property="equipmentCost" column="equipment_cost" />
+        <result property="materialCost"  column="material_cost"  />
+        <result property="drugCost"      column="drug_cost"      />
+        <result property="otherCost"     column="other_cost"     />
+        <result property="totalCost"     column="total_cost"     />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"        column="remark"         />
+    </resultMap>
+
+    <sql id="selectDeptCostVo">
+        select dept_id, dept_name, cost_date, personnel_cost, equipment_cost,
+               material_cost, drug_cost, other_cost, total_cost,
+               create_by, create_time, update_by, update_time, remark
+        from drm_dept_cost
+    </sql>
+
+    <select id="selectDeptCostList" parameterType="DeptCost" resultMap="DeptCostResult">
+        <include refid="selectDeptCostVo"/>
+        <where>
+            <if test="deptName != null and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="costDate != null and costDate != ''"> and cost_date = #{costDate}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectDeptCostById" parameterType="Long" resultMap="DeptCostResult">
+        <include refid="selectDeptCostVo"/>
+        where dept_id = #{deptId}
+    </select>
+
+    <insert id="insertDeptCost" parameterType="DeptCost" useGeneratedKeys="true" keyProperty="deptId">
+        insert into drm_dept_cost
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null">dept_name,</if>
+            <if test="costDate != null">cost_date,</if>
+            <if test="personnelCost != null">personnel_cost,</if>
+            <if test="equipmentCost != null">equipment_cost,</if>
+            <if test="materialCost != null">material_cost,</if>
+            <if test="drugCost != null">drug_cost,</if>
+            <if test="otherCost != null">other_cost,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null">#{deptName},</if>
+            <if test="costDate != null">#{costDate},</if>
+            <if test="personnelCost != null">#{personnelCost},</if>
+            <if test="equipmentCost != null">#{equipmentCost},</if>
+            <if test="materialCost != null">#{materialCost},</if>
+            <if test="drugCost != null">#{drugCost},</if>
+            <if test="otherCost != null">#{otherCost},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateDeptCost" parameterType="DeptCost">
+        update drm_dept_cost
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="costDate != null">cost_date = #{costDate},</if>
+            <if test="personnelCost != null">personnel_cost = #{personnelCost},</if>
+            <if test="equipmentCost != null">equipment_cost = #{equipmentCost},</if>
+            <if test="materialCost != null">material_cost = #{materialCost},</if>
+            <if test="drugCost != null">drug_cost = #{drugCost},</if>
+            <if test="otherCost != null">other_cost = #{otherCost},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+
+    <delete id="deleteDeptCostById" parameterType="Long">
+        delete from drm_dept_cost where dept_id = #{deptId}
+    </delete>
+
+    <delete id="deleteDeptCostByIds" parameterType="Long">
+        delete from drm_dept_cost where dept_id in
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </delete>
+</mapper>

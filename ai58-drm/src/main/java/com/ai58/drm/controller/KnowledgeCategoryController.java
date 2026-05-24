@@ -36,7 +36,7 @@ public class KnowledgeCategoryController extends BaseController
     /**
      * 获取知识分类列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:list')")
     @GetMapping("/list")
     public TableDataInfo list(KnowledgeCategory knowledgecategory)
     {
@@ -45,7 +45,7 @@ public class KnowledgeCategoryController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:export')")
     @Log(title = "知识分类", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, KnowledgeCategory knowledgecategory)
@@ -55,14 +55,14 @@ public class KnowledgeCategoryController extends BaseController
         util.exportExcel(response, list, "知识分类数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:query')")
     @GetMapping(value = "/{categoryId}")
     public AjaxResult getInfo(@PathVariable Long categoryId)
     {
         return success(knowledgecategoryService.selectKnowledgeCategoryById(categoryId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:add')")
     @Log(title = "知识分类", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody KnowledgeCategory knowledgecategory)
@@ -71,7 +71,7 @@ public class KnowledgeCategoryController extends BaseController
         return toAjax(knowledgecategoryService.insertKnowledgeCategory(knowledgecategory));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:edit')")
     @Log(title = "知识分类", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody KnowledgeCategory knowledgecategory)
@@ -80,7 +80,7 @@ public class KnowledgeCategoryController extends BaseController
         return toAjax(knowledgecategoryService.updateKnowledgeCategory(knowledgecategory));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/knowledgeCategory:remove')")
     @Log(title = "知识分类", businessType = BusinessType.DELETE)
     @DeleteMapping("/{categoryIds}")
     public AjaxResult remove(@PathVariable Long[] categoryIds)

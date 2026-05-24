@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.DrgDoctorMapper">
+    <resultMap type="DrgDoctor" id="DrgDoctorResult">
+        <result property="doctorId"        column="doctor_id"        />
+        <result property="doctorName"      column="doctor_name"      />
+        <result property="deptName"        column="dept_name"        />
+        <result property="drgCode"         column="drg_code"         />
+        <result property="caseCnt"         column="case_cnt"         />
+        <result property="avgCost"         column="avg_cost"         />
+        <result property="cmi"             column="cmi"              />
+        <result property="perfScore"       column="perf_score"       />
+        <result property="statDate"        column="stat_date"        />
+        <result property="status"          column="status"           />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+    </resultMap>
+
+    <sql id="selectDrgDoctorVo">
+        select doctor_id, doctor_name, dept_name, drg_code, case_cnt, avg_cost, cmi, perf_score,
+               stat_date, status, create_by, create_time, update_by, update_time, remark
+        from drm_drg_doctor
+    </sql>
+
+    <select id="selectDrgDoctorList" parameterType="DrgDoctor" resultMap="DrgDoctorResult">
+        <include refid="selectDrgDoctorVo"/>
+        <where>
+            <if test="doctorName != null and doctorName != ''"> and doctor_name like concat('%', #{doctorName}, '%')</if>
+            <if test="deptName != null and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="drgCode != null and drgCode != ''"> and drg_code = #{drgCode}</if>
+            <if test="statDate != null and statDate != ''"> and stat_date = #{statDate}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectDrgDoctorById" parameterType="Long" resultMap="DrgDoctorResult">
+        <include refid="selectDrgDoctorVo"/>
+        where doctor_id = #{doctorId}
+    </select>
+
+    <insert id="insertDrgDoctor" parameterType="DrgDoctor" useGeneratedKeys="true" keyProperty="doctorId">
+        insert into drm_drg_doctor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="doctorName != null and doctorName != ''">doctor_name,</if>
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="drgCode != null and drgCode != ''">drg_code,</if>
+            <if test="caseCnt != null">case_cnt,</if>
+            <if test="avgCost != null">avg_cost,</if>
+            <if test="cmi != null">cmi,</if>
+            <if test="perfScore != null">perf_score,</if>
+            <if test="statDate != null">stat_date,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="doctorName != null and doctorName != ''">#{doctorName},</if>
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="drgCode != null and drgCode != ''">#{drgCode},</if>
+            <if test="caseCnt != null">#{caseCnt},</if>
+            <if test="avgCost != null">#{avgCost},</if>
+            <if test="cmi != null">#{cmi},</if>
+            <if test="perfScore != null">#{perfScore},</if>
+            <if test="statDate != null">#{statDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateDrgDoctor" parameterType="DrgDoctor">
+        update drm_drg_doctor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="doctorName != null and doctorName != ''">doctor_name = #{doctorName},</if>
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="drgCode != null and drgCode != ''">drg_code = #{drgCode},</if>
+            <if test="caseCnt != null">case_cnt = #{caseCnt},</if>
+            <if test="avgCost != null">avg_cost = #{avgCost},</if>
+            <if test="cmi != null">cmi = #{cmi},</if>
+            <if test="perfScore != null">perf_score = #{perfScore},</if>
+            <if test="statDate != null">stat_date = #{statDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where doctor_id = #{doctorId}
+    </update>
+
+    <delete id="deleteDrgDoctorById" parameterType="Long">
+        delete from drm_drg_doctor where doctor_id = #{doctorId}
+    </delete>
+
+    <delete id="deleteDrgDoctorByIds" parameterType="Long">
+        delete from drm_drg_doctor where doctor_id in
+        <foreach item="doctorId" collection="array" open="(" separator="," close=")">
+            #{doctorId}
+        </foreach>
+    </delete>
+</mapper>

@@ -36,7 +36,7 @@ public class SurgeryStatsController extends BaseController
     /**
      * 获取手术运营分析列表
      */
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:list')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:list')")
     @GetMapping("/list")
     public TableDataInfo list(SurgeryStats surgerystats)
     {
@@ -45,7 +45,7 @@ public class SurgeryStatsController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:export')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:export')")
     @Log(title = "手术运营分析", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SurgeryStats surgerystats)
@@ -55,14 +55,14 @@ public class SurgeryStatsController extends BaseController
         util.exportExcel(response, list, "手术运营分析数据");
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:query')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:query')")
     @GetMapping(value = "/{statsId}")
     public AjaxResult getInfo(@PathVariable Long statsId)
     {
         return success(surgerystatsService.selectSurgeryStatsById(statsId));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:add')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:add')")
     @Log(title = "手术运营分析", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SurgeryStats surgerystats)
@@ -71,7 +71,7 @@ public class SurgeryStatsController extends BaseController
         return toAjax(surgerystatsService.insertSurgeryStats(surgerystats));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:edit')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:edit')")
     @Log(title = "手术运营分析", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SurgeryStats surgerystats)
@@ -80,7 +80,7 @@ public class SurgeryStatsController extends BaseController
         return toAjax(surgerystatsService.updateSurgeryStats(surgerystats));
     }
 
-    @PreAuthorize("@ss.hasPermi('drm/surgeryStats:remove')")
+    // @PreAuthorize("@ss.hasPermi('drm/surgeryStats:remove')")
     @Log(title = "手术运营分析", businessType = BusinessType.DELETE)
     @DeleteMapping("/{statsIds}")
     public AjaxResult remove(@PathVariable Long[] statsIds)
