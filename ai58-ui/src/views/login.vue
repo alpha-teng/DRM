@@ -159,7 +159,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 .login {
   display: flex;
-  justify-content: right;
+  justify-content: center;
   align-items: center;
   height: 100%;
   background-image: url("../assets/images/login-background.jpg");
@@ -168,17 +168,17 @@ export default {
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  color: #06162f;
+  color: #ffffff;
+  letter-spacing: 2px;
 }
 
 .login-form {
-  border-radius: 6px;
-  background: #ffffff;
+  border-radius: 10px;
+  background: rgba(13, 92, 69, 0.75);
   width: 400px;
-  margin-right: 100px;
-  padding: 25px 25px 5px 25px;
+  padding: 35px 30px 10px 30px;
   .el-input {
     height: 38px;
     input {
