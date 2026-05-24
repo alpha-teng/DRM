@@ -61,6 +61,13 @@
             <artifactId>ai58-generator</artifactId>
         </dependency>
 
+        <!-- DRM业务模块 -->
+        <dependency>
+            <groupId>com.ai58</groupId>
+            <artifactId>ai58-drm</artifactId>
+            <version>1.0.rc</version>
+        </dependency>
+
         <!-- Apache POI 用于Excel操作 -->
         <dependency>
             <groupId>org.apache.poi</groupId>
