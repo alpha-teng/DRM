@@ -3,10 +3,13 @@
     <!-- 顶部预警KPI -->
     <div class="top-cards">
       <div class="tech-panel card alert-card" v-for="(kpi, index) in kpiData" :key="index">
-        <div class="card-title text-gradient"><span class="kpi-icon">{{ kpi.icon }}</span> {{ kpi.title }}</div>
-        <div class="card-value" :class="kpi.color">{{ kpi.value }}<span class="unit">{{ kpi.unit }}</span></div>
-        <div class="card-footer">
-          {{ kpi.desc }} <span :class="kpi.trend > 0 ? 'up' : 'down'">{{ kpi.trend > 0 ? '↑' : '↓' }} {{ Math.abs(kpi.trend) }}</span>
+        <div class="card-icon">{{ kpi.icon }}</div>
+        <div class="card-info">
+          <div class="card-title text-gradient">{{ kpi.title }}</div>
+          <div class="card-value" :class="kpi.color">{{ kpi.value }}<span class="unit">{{ kpi.unit }}</span></div>
+          <div class="card-footer">
+            {{ kpi.desc }} <span :class="kpi.trend > 0 ? 'up' : 'down'">{{ kpi.trend > 0 ? '↑' : '↓' }} {{ Math.abs(kpi.trend) }}</span>
+          </div>
         </div>
         <!-- 呼吸灯效果 -->
         <div class="breathing-light" :class="kpi.color" v-if="kpi.isUrgent"></div>
@@ -215,12 +218,34 @@ onUnmounted(() => {
 
 .alert-card {
   flex: 1;
-  padding: 15px 20px;
+  padding: 15px 20px !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-icon {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 }
 
 .breathing-light {

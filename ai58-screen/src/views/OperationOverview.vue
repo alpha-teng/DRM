@@ -2,10 +2,13 @@
   <div class="page-container">
     <div class="top-cards">
       <div class="tech-panel card" v-for="(kpi, index) in kpiData" :key="index">
-        <div class="card-title text-gradient"><span class="kpi-icon">{{ kpi.icon }}</span> {{ kpi.title }}</div>
-        <div class="card-value">{{ kpi.value }}<span class="unit">{{ kpi.unit }}</span></div>
-        <div class="card-footer" :class="kpi.trend > 0 ? 'up' : 'down'">
-          同比 {{ kpi.trend > 0 ? '↑' : '↓' }} {{ Math.abs(kpi.trend) }}%
+        <div class="card-icon">{{ kpi.icon }}</div>
+        <div class="card-info">
+          <div class="card-title text-gradient">{{ kpi.title }}</div>
+          <div class="card-value">{{ kpi.value }}<span class="unit">{{ kpi.unit }}</span></div>
+          <div class="card-footer" :class="kpi.trend > 0 ? 'up' : 'down'">
+            同比 {{ kpi.trend > 0 ? '↑' : '↓' }} {{ Math.abs(kpi.trend) }}%
+          </div>
         </div>
       </div>
     </div>
@@ -257,10 +260,11 @@ onUnmounted(() => {
 
 .card {
   flex: 1;
-  padding: 15px 20px;
+  padding: 15px 20px !important;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
   position: relative;
   overflow: hidden;
 }
@@ -274,6 +278,23 @@ onUnmounted(() => {
   height: 60px;
   background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, transparent 70%);
   border-radius: 50%;
+}
+
+.card-icon {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 8px;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }

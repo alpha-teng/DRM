@@ -53,3 +53,8 @@ body {
 
 .kpi-icon { margin-right: 6px; font-size: 16px; vertical-align: baseline; }
 
+
+.top-cards .card, .top-cards .alert-card { padding-left: 65px !important; }
+.kpi-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 36px; -webkit-text-fill-color: initial; background-clip: initial; opacity: 0.85; margin-right: 0; filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.5)); z-index: 0; pointer-events: none; }
+.card-title, .card-value, .card-footer { position: relative; z-index: 1; }
+
