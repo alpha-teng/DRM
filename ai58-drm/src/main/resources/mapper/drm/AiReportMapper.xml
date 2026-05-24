@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai58.drm.mapper.AiReportMapper">
+
+    <resultMap type="DrmAiReport" id="AiReportResult">
+        <result property="reportId"    column="report_id"    />
+        <result property="reportTitle"    column="report_title"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="reportType"    column="report_type"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectAiReportVo">
+        select report_id, report_title, dept_name, report_type, status, create_by, create_time, update_by, update_time, remark from drm_ai_report
+    </sql>
+
+    <select id="selectAiReportList" parameterType="DrmAiReport" resultMap="AiReportResult">
+        <include refid="selectAiReportVo"/>
+        <where>  
+            <if test="reportTitle != null and reportTitle != ''"> and report_title like concat('%', #{reportTitle}, '%')</if>
+            <if test="deptName != null and deptName != ''"> and dept_name = #{deptName}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectAiReportById" parameterType="Long" resultMap="AiReportResult">
+        <include refid="selectAiReportVo"/>
+        where report_id = #{id}
+    </select>
+        
+    <insert id="insertAiReport" parameterType="DrmAiReport" useGeneratedKeys="true" keyProperty="reportId">
+        insert into drm_ai_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null">report_title,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportTitle != null">#{reportTitle},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateAiReport" parameterType="DrmAiReport">
+        update drm_ai_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportTitle != null">report_title = #{reportTitle},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="reportType != null">report_type = #{reportType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteAiReportById" parameterType="Long">
+        delete from drm_ai_report where report_id = #{id}
+    </delete>
+
+    <delete id="deleteAiReportByIds" parameterType="String">
+        delete from drm_ai_report where report_id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

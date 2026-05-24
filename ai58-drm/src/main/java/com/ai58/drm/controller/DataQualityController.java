@@ -27,7 +27,7 @@ import com.ai58.drm.service.IDataQualityService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/dataQuality")
+@RequestMapping("/drm/dataQuality")
 public class DataQualityController extends BaseController
 {
     @Autowired

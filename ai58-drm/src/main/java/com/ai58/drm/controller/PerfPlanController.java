@@ -27,7 +27,7 @@ import com.ai58.drm.service.IPerfPlanService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/perfPlan")
+@RequestMapping("/drm/perfPlan")
 public class PerfPlanController extends BaseController
 {
     @Autowired

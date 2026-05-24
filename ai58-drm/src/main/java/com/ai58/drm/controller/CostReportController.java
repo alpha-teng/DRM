@@ -14,7 +14,7 @@ import com.ai58.drm.domain.CostReport;
 import com.ai58.drm.service.ICostReportService;
 
 @RestController
-@RequestMapping("drm/cost/costReport")
+@RequestMapping("/drm/cost/costReport")
 public class CostReportController extends BaseController {
     @Autowired
     private ICostReportService costReportService;

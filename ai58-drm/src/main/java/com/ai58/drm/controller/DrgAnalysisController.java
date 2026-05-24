@@ -27,7 +27,7 @@ import com.ai58.drm.service.IDrgAnalysisService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/drgAnalysis")
+@RequestMapping("/drm/drgAnalysis")
 public class DrgAnalysisController extends BaseController
 {
     @Autowired

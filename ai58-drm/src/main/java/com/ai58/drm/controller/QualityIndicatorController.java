@@ -27,7 +27,7 @@ import com.ai58.drm.service.IQualityIndicatorService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/qualityIndicator")
+@RequestMapping("/drm/qualityIndicator")
 public class QualityIndicatorController extends BaseController
 {
     @Autowired

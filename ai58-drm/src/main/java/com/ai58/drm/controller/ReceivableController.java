@@ -27,7 +27,7 @@ import com.ai58.drm.service.IReceivableService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/receivable")
+@RequestMapping("/drm/receivable")
 public class ReceivableController extends BaseController
 {
     @Autowired

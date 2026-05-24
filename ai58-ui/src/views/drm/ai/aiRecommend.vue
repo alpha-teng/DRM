@@ -26,15 +26,15 @@
     </el-row>
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="编号" align="center" prop="id" width="100" />
-      <el-table-column label="名称" align="center" prop="name" :show-overflow-tooltip="true" />
+      <el-table-column label="编号" align="center" prop="recommendId" width="100" />
+      <el-table-column label="推荐标题" align="center" prop="recommendTitle" :show-overflow-tooltip="true" />
       <el-table-column label="科室" align="center" prop="deptName" />
-      <el-table-column label="数值" align="center" prop="value" />
+      <el-table-column label="推荐类型" align="center" prop="recommendType" />
       <el-table-column label="状态" align="center" prop="status">
         <template slot-scope="scope"><el-tag v-if="scope.row.status === '0'" type="success">正常</el-tag><el-tag v-else type="danger">异常</el-tag></template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="160">
-        <template slot-scope="scope"><span>{ parseTime(scope.row.createTime) }</span></template>
+        <template slot-scope="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
         <template slot-scope="scope"><el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button><el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button></template>
@@ -43,14 +43,14 @@
     <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="名称" prop="name"><el-input v-model="form.name" placeholder="请输入名称" /></el-form-item>
-        <el-form-item label="科室" prop="deptId">
-          <el-select v-model="form.deptId" placeholder="请选择科室" style="width: 100%">
-            <el-option label="内科" value="1" /><el-option label="外科" value="2" />
-            <el-option label="儿科" value="3" /><el-option label="妇产科" value="4" /><el-option label="急诊科" value="5" />
+        <el-form-item label="推荐标题" prop="recommendTitle"><el-input v-model="form.recommendTitle" placeholder="请输入推荐标题" /></el-form-item>
+        <el-form-item label="科室" prop="deptName">
+          <el-select v-model="form.deptName" placeholder="请选择科室" style="width: 100%">
+            <el-option label="内科" value="内科" /><el-option label="外科" value="外科" />
+            <el-option label="儿科" value="儿科" /><el-option label="妇产科" value="妇产科" /><el-option label="急诊科" value="急诊科" />
           </el-select>
         </el-form-item>
-        <el-form-item label="数值" prop="value"><el-input v-model="form.value" placeholder="请输入数值" /></el-form-item>
+        <el-form-item label="推荐类型" prop="recommendType"><el-input v-model="form.recommendType" placeholder="请输入推荐类型" /></el-form-item>
         <el-form-item label="状态" prop="status"><el-radio-group v-model="form.status"><el-radio label="0">正常</el-radio><el-radio label="1">异常</el-radio></el-radio-group></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="form.remark" type="textarea" placeholder="请输入备注" /></el-form-item>
       </el-form>
@@ -86,17 +86,17 @@ export default {
     },
     handleQuery() { this.queryParams.pageNum = 1; this.getList() },
     resetQuery() { this.$refs.queryForm.resetFields(); this.handleQuery() },
-    handleSelectionChange(sel) { this.ids = sel.map(i => i.id); this.single = sel.length !== 1; this.multiple = !sel.length },
+    handleSelectionChange(sel) { this.ids = sel.map(i => i.recommendId); this.single = sel.length !== 1; this.multiple = !sel.length },
     handleAdd() { this.reset(); this.dialogTitle = '新增'; this.dialogVisible = true },
     handleUpdate(row) {
       this.reset()
-      const id = row ? row.id : this.ids[0]
+      const id = row ? row.recommendId : this.ids[0]
       AiRecommendApi.get(id).then(res => { this.form = res.data; this.dialogTitle = '修改'; this.dialogVisible = true })
     },
     handleDelete(row) {
-      const ids = row ? [row.id] : this.ids
+      const ids = row ? [row.recommendId] : this.ids
       this.$confirm('是否确认删除选中的数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-        .then(() => AiRecommendApi.del(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
+        .then(() => AiRecommendApi.remove(ids)).then(() => { this.getList(); this.$message.success('删除成功') })
     },
     handleExport() {
       this.$confirm('是否确认导出所有数据项?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
@@ -105,8 +105,8 @@ export default {
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const action = this.form.id ? AiRecommendApi.update(this.form) : AiRecommendApi.add(this.form)
-          action.then(() => { this.$message.success(this.form.id ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
+          const action = this.form.recommendId ? AiRecommendApi.update(this.form) : AiRecommendApi.add(this.form)
+          action.then(() => { this.$message.success(this.form.recommendId ? '修改成功' : '新增成功'); this.dialogVisible = false; this.getList() })
         }
       })
     },

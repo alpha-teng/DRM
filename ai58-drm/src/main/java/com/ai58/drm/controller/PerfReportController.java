@@ -21,7 +21,7 @@ import com.ai58.drm.domain.PerfReport;
 import com.ai58.drm.service.IPerfReportService;
 
 @RestController
-@RequestMapping("drm/perfReport")
+@RequestMapping("/drm/perfReport")
 public class PerfReportController extends BaseController {
     @Autowired
     private IPerfReportService perfreportService;

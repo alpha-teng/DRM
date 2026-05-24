@@ -27,7 +27,7 @@ import com.ai58.drm.service.IDrgDataService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/drgData")
+@RequestMapping("/drm/drgData")
 public class DrgDataController extends BaseController
 {
     @Autowired

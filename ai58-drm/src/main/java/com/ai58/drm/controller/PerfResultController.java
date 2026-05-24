@@ -27,7 +27,7 @@ import com.ai58.drm.service.IPerfResultService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/perfResult")
+@RequestMapping("/drm/perfResult")
 public class PerfResultController extends BaseController
 {
     @Autowired

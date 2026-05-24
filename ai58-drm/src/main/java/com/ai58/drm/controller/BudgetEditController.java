@@ -21,7 +21,7 @@ import com.ai58.drm.domain.BudgetEdit;
 import com.ai58.drm.service.IBudgetEditService;
 
 @RestController
-@RequestMapping("drm/budgetEdit")
+@RequestMapping("/drm/budgetEdit")
 public class BudgetEditController extends BaseController {
     @Autowired
     private IBudgetEditService budgeteditService;

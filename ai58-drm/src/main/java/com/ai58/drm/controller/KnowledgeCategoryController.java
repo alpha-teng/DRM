@@ -27,7 +27,7 @@ import com.ai58.drm.service.IKnowledgeCategoryService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/knowledgeCategory")
+@RequestMapping("/drm/knowledgeCategory")
 public class KnowledgeCategoryController extends BaseController
 {
     @Autowired

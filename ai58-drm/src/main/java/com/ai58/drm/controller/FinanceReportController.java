@@ -26,7 +26,7 @@ import com.ai58.drm.service.IFinanceReportService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/finance/financeReport")
+@RequestMapping("/drm/finance/financeReport")
 public class FinanceReportController extends BaseController {
     @Autowired
     private IFinanceReportService financeReportService;

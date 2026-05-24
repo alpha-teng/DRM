@@ -27,7 +27,7 @@ import com.ai58.drm.service.IKnowledgeContentService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/knowledgeContent")
+@RequestMapping("/drm/knowledgeContent")
 public class KnowledgeContentController extends BaseController
 {
     @Autowired

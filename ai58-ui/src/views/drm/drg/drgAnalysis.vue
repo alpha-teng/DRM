@@ -35,14 +35,14 @@
         <div class="chart-box">
           <div class="chart-title">数据明细</div>
           <el-table :data="tableData" v-loading="loading" border>
+            <el-table-column label="分析ID" align="center" prop="analysisId" width="80" />
+            <el-table-column label="分析类型" align="center" prop="analysisType" />
             <el-table-column label="科室" align="center" prop="deptName" />
-            <el-table-column label="指标1" align="center" prop="value1" />
-            <el-table-column label="指标2" align="center" prop="value2" />
-            <el-table-column label="同比" align="center" prop="yoy">
-              <template slot-scope="scope"><span :class="scope.row.yoy >= 0 ? 'text-red' : 'text-green'">{{ scope.row.yoy }}%</span></template>
-            </el-table-column>
-            <el-table-column label="环比" align="center" prop="qoq">
-              <template slot-scope="scope"><span :class="scope.row.qoq >= 0 ? 'text-red' : 'text-green'">{{ scope.row.qoq }}%</span></template>
+            <el-table-column label="DRG编码" align="center" prop="drgCode" />
+            <el-table-column label="指标名称" align="center" prop="indicatorName" />
+            <el-table-column label="指标值" align="center" prop="indicatorValue" />
+            <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+              <template slot-scope="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
             </el-table-column>
           </el-table>
           <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getData" />
@@ -54,6 +54,7 @@
 
 <script>
 import * as echarts from 'echarts'
+import { DrgAnalysisApi } from '@/api/drm/drgAnalysis'
 
 export default {
   name: "Drganalysis",
@@ -65,16 +66,14 @@ export default {
   methods: {
     getData() {
       this.loading = true
-      setTimeout(() => {
-        this.tableData = [
-          { deptName: '内科', value1: 1250, value2: 980, yoy: 5.2, qoq: -1.3 },
-          { deptName: '外科', value1: 890, value2: 750, yoy: 8.1, qoq: 3.5 },
-          { deptName: '儿科', value1: 680, value2: 620, yoy: -2.1, qoq: -0.8 },
-          { deptName: '妇产科', value1: 560, value2: 480, yoy: 12.5, qoq: 6.2 }
-        ]
-        this.total = 4; this.loading = false
+      DrgAnalysisApi.list(this.queryParams).then(res => {
+        this.tableData = res.rows || []
+        this.total = res.total || 0
+        this.loading = false
         this.$nextTick(() => { this.updateCharts() })
-      }, 400)
+      }).catch(() => {
+        this.loading = false
+      })
     },
     initCharts() { this.lineChart = echarts.init(this.$refs.lineChart); this.barChart = echarts.init(this.$refs.barChart) },
     updateCharts() {

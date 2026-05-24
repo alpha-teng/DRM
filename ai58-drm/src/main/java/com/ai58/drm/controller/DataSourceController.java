@@ -27,7 +27,7 @@ import com.ai58.drm.service.IDataSourceService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/dataSource")
+@RequestMapping("/drm/dataSource")
 public class DataSourceController extends BaseController
 {
     @Autowired
@@ -46,7 +46,7 @@ public class DataSourceController extends BaseController
     }
 
     // @PreAuthorize("@ss.hasPermi('drm/dataSource:export')")
-    @Log(title = "数据源", businessType = BusinessType.EXPORT)
+
     @PostMapping("/export")
     public void export(HttpServletResponse response, DataSource datasource)
     {

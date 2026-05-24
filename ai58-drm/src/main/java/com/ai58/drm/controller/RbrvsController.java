@@ -21,7 +21,7 @@ import com.ai58.drm.domain.Rbrvs;
 import com.ai58.drm.service.IRbrvsService;
 
 @RestController
-@RequestMapping("drm/rbrvs")
+@RequestMapping("/drm/rbrvs")
 public class RbrvsController extends BaseController {
     @Autowired
     private IRbrvsService rbrvsService;

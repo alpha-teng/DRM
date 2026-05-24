@@ -21,7 +21,7 @@ import com.ai58.drm.domain.BudgetExecute;
 import com.ai58.drm.service.IBudgetExecuteService;
 
 @RestController
-@RequestMapping("drm/budgetExecute")
+@RequestMapping("/drm/budgetExecute")
 public class BudgetExecuteController extends BaseController {
     @Autowired
     private IBudgetExecuteService budgetexecuteService;

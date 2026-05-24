@@ -21,7 +21,7 @@ import com.ai58.drm.domain.QualityPerf;
 import com.ai58.drm.service.IQualityPerfService;
 
 @RestController
-@RequestMapping("drm/qualityPerf")
+@RequestMapping("/drm/qualityPerf")
 public class QualityPerfController extends BaseController {
     @Autowired
     private IQualityPerfService qualityperfService;

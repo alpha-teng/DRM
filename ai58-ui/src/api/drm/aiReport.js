@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
 export const AiReportApi = {
-  list: (params) => request({ url: '/drm/aiChatLogaiReport/list', method: 'get', params }),
-  get: (id) => request({ url: `/drm/aiChatLogaiReport/${id}`, method: 'get' }),
-  add: (data) => request({ url: '/drm/aiChatLogaiReport', method: 'post', data }),
-  update: (data) => request({ url: '/drm/aiChatLogaiReport', method: 'put', data }),
-  remove: (ids) => request({ url: `/drm/aiChatLogaiReport/${ids}`, method: 'delete' }),
+  list(query) { return request({ url: '/drm/aiReport/list', method: 'get', params: query }) },
+  get(id) { return request({ url: '/drm/aiReport/' + id, method: 'get' }) },
+  add(data) { return request({ url: '/drm/aiReport', method: 'post', data: data }) },
+  update(data) { return request({ url: '/drm/aiReport', method: 'put', data: data }) },
+  remove(ids) { return request({ url: '/drm/aiReport/' + ids, method: 'delete' }) },
+  export(query) { return request({ url: '/drm/aiReport/export', method: 'get', params: query, responseType: 'blob' }) }
 }

@@ -27,7 +27,7 @@ import com.ai58.drm.service.IOperationReportService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/operationReport")
+@RequestMapping("/drm/operationReport")
 public class OperationReportController extends BaseController
 {
     @Autowired

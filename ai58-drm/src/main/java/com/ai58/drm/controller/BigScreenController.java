@@ -27,7 +27,7 @@ import com.ai58.drm.service.IBigScreenService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/bigScreen")
+@RequestMapping("/drm/bigScreen")
 public class BigScreenController extends BaseController
 {
     @Autowired

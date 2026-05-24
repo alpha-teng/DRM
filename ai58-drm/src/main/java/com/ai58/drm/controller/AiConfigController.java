@@ -27,7 +27,7 @@ import com.ai58.drm.service.IAiConfigService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/aiConfig")
+@RequestMapping("/drm/aiConfig")
 public class AiConfigController extends BaseController
 {
     @Autowired

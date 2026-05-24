@@ -27,7 +27,7 @@ import com.ai58.drm.service.IPrescriptionReviewService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/prescriptionReview")
+@RequestMapping("/drm/prescriptionReview")
 public class PrescriptionReviewController extends BaseController
 {
     @Autowired

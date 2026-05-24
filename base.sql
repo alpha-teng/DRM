@@ -11,7 +11,7 @@
  Target Server Version : 50744
  File Encoding         : 65001
 
- Date: 24/05/2026 20:37:37
+ Date: 24/05/2026 23:28:48
 */
 
 SET NAMES utf8mb4;
@@ -74,6 +74,31 @@ CREATE TABLE `drm_big_screen`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '大屏配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for drm_case_cost
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_case_cost`;
+CREATE TABLE `drm_case_cost`  (
+  `case_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '病例ID',
+  `case_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '病种名称',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
+  `case_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '病种编码',
+  `total_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '总成本',
+  `drug_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '药品成本',
+  `material_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '材料成本',
+  `service_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '服务成本',
+  `avg_stay_days` int(11) NULL DEFAULT NULL COMMENT '平均住院日',
+  `cost_date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '成本日期',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`case_id`) USING BTREE,
+  INDEX `idx_dept_name`(`dept_name`) USING BTREE,
+  INDEX `idx_cost_date`(`cost_date`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '病种成本表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for drm_cost_allocation
 -- ----------------------------
 DROP TABLE IF EXISTS `drm_cost_allocation`;
@@ -114,6 +139,29 @@ CREATE TABLE `drm_cost_data`  (
   INDEX `idx_cost_date`(`cost_date`) USING BTREE,
   INDEX `idx_dept_name`(`dept_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '成本数据表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_cost_report
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_cost_report`;
+CREATE TABLE `drm_cost_report`  (
+  `report_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '报告ID',
+  `report_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '报告标题',
+  `report_period` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告周期',
+  `report_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告类型',
+  `target_dept` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '目标科室',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '报告内容',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`report_id`) USING BTREE,
+  INDEX `idx_report_type`(`report_type`) USING BTREE,
+  INDEX `idx_target_dept`(`target_dept`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '成本报告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_data_mapping
@@ -176,6 +224,30 @@ CREATE TABLE `drm_data_source`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据源配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for drm_dept_cost
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_dept_cost`;
+CREATE TABLE `drm_dept_cost`  (
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '科室ID',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '科室名称',
+  `cost_date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '成本日期',
+  `personnel_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '人力成本',
+  `equipment_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '设备成本',
+  `material_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '材料成本',
+  `drug_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '药品成本',
+  `other_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '其他成本',
+  `total_cost` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '总成本',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`dept_id`) USING BTREE,
+  INDEX `idx_dept_name`(`dept_name`) USING BTREE,
+  INDEX `idx_cost_date`(`cost_date`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '科室成本表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for drm_drg_analysis
 -- ----------------------------
 DROP TABLE IF EXISTS `drm_drg_analysis`;
@@ -184,17 +256,15 @@ CREATE TABLE `drm_drg_analysis`  (
   `analysis_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分析类型',
   `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
   `drg_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'DRG编码',
-  `indicator_value` decimal(12, 4) NULL DEFAULT 0.0000 COMMENT '指标值',
+  `indicator_value` decimal(10, 2) NULL DEFAULT NULL COMMENT '指标值',
   `indicator_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '指标名称',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`analysis_id`) USING BTREE,
-  INDEX `idx_analysis_type`(`analysis_type`) USING BTREE,
-  INDEX `idx_dept_name`(`dept_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'DRG分析表' ROW_FORMAT = Dynamic;
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`analysis_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'DRG分析表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_drg_data
@@ -221,6 +291,28 @@ CREATE TABLE `drm_drg_data`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'DRG数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for drm_drg_perf
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_drg_perf`;
+CREATE TABLE `drm_drg_perf`  (
+  `perf_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '绩效ID',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室',
+  `drg_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'DRG编码',
+  `drg_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'DRG名称',
+  `case_cnt` int(11) NULL DEFAULT NULL COMMENT '病例数',
+  `perf_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '绩效分数',
+  `perf_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '绩效金额',
+  `calc_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '计算日期',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`perf_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'DRG绩效表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for drm_early_warning
 -- ----------------------------
 DROP TABLE IF EXISTS `drm_early_warning`;
@@ -245,6 +337,27 @@ CREATE TABLE `drm_early_warning`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '预警信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for drm_efficiency_perf
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_efficiency_perf`;
+CREATE TABLE `drm_efficiency_perf`  (
+  `perf_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '绩效ID',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
+  `efficiency_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '效率分数',
+  `work_load` decimal(10, 2) NULL DEFAULT NULL COMMENT '工作量',
+  `bed_utilization` decimal(10, 2) NULL DEFAULT NULL COMMENT '床位利用率',
+  `equip_utilization` decimal(10, 2) NULL DEFAULT NULL COMMENT '设备利用率',
+  `calc_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '计算日期',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`perf_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '效率绩效表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for drm_expense
 -- ----------------------------
 DROP TABLE IF EXISTS `drm_expense`;
@@ -263,6 +376,35 @@ CREATE TABLE `drm_expense`  (
   INDEX `idx_expense_date`(`expense_date`) USING BTREE,
   INDEX `idx_dept_name`(`dept_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '支出管理表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_finance_report
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_finance_report`;
+CREATE TABLE `drm_finance_report`  (
+  `report_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '报告ID',
+  `report_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '报告标题',
+  `report_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告类型（月报/季报/年报）',
+  `report_period` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告周期（2025-05）',
+  `target_dept` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '目标科室（全院报告为空）',
+  `total_income` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '总收入（元）',
+  `total_expense` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '总支出（元）',
+  `balance` decimal(15, 2) NULL DEFAULT 0.00 COMMENT '结余（元）',
+  `income_growth` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收入增长率',
+  `expense_growth` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '支出增长率',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '报告内容（富文本）',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`report_id`) USING BTREE,
+  INDEX `idx_report_type`(`report_type`) USING BTREE,
+  INDEX `idx_report_period`(`report_period`) USING BTREE,
+  INDEX `idx_target_dept`(`target_dept`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务报告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_income
@@ -314,16 +456,16 @@ CREATE TABLE `drm_inpatient_stats`  (
 DROP TABLE IF EXISTS `drm_knowledge_category`;
 CREATE TABLE `drm_knowledge_category`  (
   `category_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-  `category_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分类名称',
-  `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父分类ID',
-  `order_num` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `category_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类名称',
+  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '父级ID',
+  `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '知识分类表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '知识分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_knowledge_content
@@ -366,6 +508,31 @@ CREATE TABLE `drm_operation_report`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '运营报告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for drm_operation_topic
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_operation_topic`;
+CREATE TABLE `drm_operation_topic`  (
+  `topic_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '专题ID',
+  `topic_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '专题名称',
+  `topic_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专题类型（科室分析/病种分析/DRG分析/成本分析等）',
+  `target_dept` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '目标科室',
+  `analysis_model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分析模型（对比分析/趋势分析/分布分析/关联分析等）',
+  `data_config` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '数据配置（JSON格式，存储选择的数据维度和指标）',
+  `chart_config` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '图表配置（JSON格式，存储图表类型和配置）',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `ai_insights` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT 'AI分析洞察',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`topic_id`) USING BTREE,
+  INDEX `idx_topic_type`(`topic_type`) USING BTREE,
+  INDEX `idx_target_dept`(`target_dept`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '专题分析表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for drm_outpatient_stats
 -- ----------------------------
 DROP TABLE IF EXISTS `drm_outpatient_stats`;
@@ -393,18 +560,37 @@ CREATE TABLE `drm_outpatient_stats`  (
 DROP TABLE IF EXISTS `drm_perf_plan`;
 CREATE TABLE `drm_perf_plan`  (
   `plan_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '方案ID',
-  `plan_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '方案名称',
+  `plan_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '方案名称',
   `plan_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '方案类型',
   `effective_date` date NULL DEFAULT NULL COMMENT '生效日期',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0草稿 1启用 2停用）',
-  `formula_config` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '公式配置JSON',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `formula_config` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '公式配置',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`plan_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '绩效方案表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '绩效方案表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_perf_report
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_perf_report`;
+CREATE TABLE `drm_perf_report`  (
+  `report_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '报告ID',
+  `report_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告名称',
+  `report_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告类型',
+  `report_period` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告周期',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`report_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '绩效报告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_perf_result
@@ -412,21 +598,19 @@ CREATE TABLE `drm_perf_plan`  (
 DROP TABLE IF EXISTS `drm_perf_result`;
 CREATE TABLE `drm_perf_result`  (
   `result_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '结果ID',
-  `plan_id` bigint(20) NOT NULL COMMENT '方案ID',
-  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
-  `doctor_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '医生姓名',
-  `perf_score` decimal(6, 2) NULL DEFAULT 0.00 COMMENT '绩效评分',
-  `perf_amount` decimal(12, 2) NULL DEFAULT 0.00 COMMENT '绩效金额',
-  `calc_date` date NULL DEFAULT NULL COMMENT '计算日期',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`result_id`) USING BTREE,
-  INDEX `idx_plan_id`(`plan_id`) USING BTREE,
-  INDEX `idx_calc_date`(`calc_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '绩效结果表' ROW_FORMAT = Dynamic;
+  `plan_id` bigint(20) NULL DEFAULT NULL COMMENT '方案ID',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室',
+  `doctor_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '医生',
+  `perf_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '绩效分数',
+  `perf_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '绩效金额',
+  `calc_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '计算日期',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`result_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '绩效结果表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_prescription_review
@@ -449,6 +633,29 @@ CREATE TABLE `drm_prescription_review`  (
   INDEX `idx_review_date`(`review_date`) USING BTREE,
   INDEX `idx_dept_name`(`dept_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '处方点评表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_project_cost
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_project_cost`;
+CREATE TABLE `drm_project_cost`  (
+  `project_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '项目ID',
+  `project_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目名称',
+  `project_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目类型',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
+  `budget_amount` decimal(15, 2) NULL DEFAULT NULL COMMENT '预算金额',
+  `actual_amount` decimal(15, 2) NULL DEFAULT NULL COMMENT '实际金额',
+  `cost_date` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '成本日期',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  PRIMARY KEY (`project_id`) USING BTREE,
+  INDEX `idx_project_type`(`project_type`) USING BTREE,
+  INDEX `idx_dept_name`(`dept_name`) USING BTREE,
+  INDEX `idx_cost_date`(`cost_date`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '项目成本表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_quality_event
@@ -493,6 +700,49 @@ CREATE TABLE `drm_quality_indicator`  (
   INDEX `idx_indicator_date`(`indicator_date`) USING BTREE,
   INDEX `idx_dept_name`(`dept_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '质量指标表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_quality_perf
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_quality_perf`;
+CREATE TABLE `drm_quality_perf`  (
+  `perf_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '绩效ID',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室',
+  `quality_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '质量得分',
+  `qualified_rate` decimal(10, 2) NULL DEFAULT NULL COMMENT '合格率',
+  `excellent_rate` decimal(10, 2) NULL DEFAULT NULL COMMENT '优秀率',
+  `incident_cnt` int(11) NULL DEFAULT NULL COMMENT '不良事件数',
+  `calc_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '计算日期',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `update_time` datetime NULL DEFAULT NULL,
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`perf_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '质量绩效表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for drm_rbrvs
+-- ----------------------------
+DROP TABLE IF EXISTS `drm_rbrvs`;
+CREATE TABLE `drm_rbrvs`  (
+  `rbrvs_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'RBRVS ID',
+  `item_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目名称',
+  `item_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目编码',
+  `dept_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '科室名称',
+  `base_point` decimal(10, 2) NULL DEFAULT NULL COMMENT '基础点数',
+  `difficulty_coeff` decimal(10, 2) NULL DEFAULT NULL COMMENT '难度系数',
+  `perf_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '绩效金额',
+  `eff_date` date NULL DEFAULT NULL COMMENT '生效日期',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`rbrvs_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'RBRVS数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for drm_receivable
@@ -891,7 +1141,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 211 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 217 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -964,7 +1214,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for sys_post

@@ -27,7 +27,7 @@ import com.ai58.drm.service.ICostDataService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/cost/costData")
+@RequestMapping("/drm/cost/costData")
 public class CostDataController extends BaseController
 {
     @Autowired

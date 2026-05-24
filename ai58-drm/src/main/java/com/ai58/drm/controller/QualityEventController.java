@@ -27,7 +27,7 @@ import com.ai58.drm.service.IQualityEventService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/qualityEvent")
+@RequestMapping("/drm/qualityEvent")
 public class QualityEventController extends BaseController
 {
     @Autowired

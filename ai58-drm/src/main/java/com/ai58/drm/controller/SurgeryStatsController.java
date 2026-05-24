@@ -27,7 +27,7 @@ import com.ai58.drm.service.ISurgeryStatsService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/surgeryStats")
+@RequestMapping("/drm/surgeryStats")
 public class SurgeryStatsController extends BaseController
 {
     @Autowired

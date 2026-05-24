@@ -26,7 +26,7 @@ import com.ai58.drm.service.IOperationTopicService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/operation/topic")
+@RequestMapping("/drm/operation/topic")
 public class OperationTopicController extends BaseController {
     @Autowired
     private IOperationTopicService operationTopicService;

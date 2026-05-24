@@ -26,7 +26,7 @@ import com.ai58.drm.service.ICaseCostService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/costData/caseCost")
+@RequestMapping("/drm/costData/caseCost")
 public class CaseCostController extends BaseController {
     @Autowired
     private ICaseCostService caseCostService;

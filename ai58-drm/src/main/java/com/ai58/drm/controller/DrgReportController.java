@@ -21,7 +21,7 @@ import com.ai58.drm.domain.DrgReport;
 import com.ai58.drm.service.IDrgReportService;
 
 @RestController
-@RequestMapping("drm/drgReport")
+@RequestMapping("/drm/drgReport")
 public class DrgReportController extends BaseController {
     @Autowired
     private IDrgReportService drgreportService;

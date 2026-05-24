@@ -21,7 +21,7 @@ import com.ai58.drm.domain.DrgDoctor;
 import com.ai58.drm.service.IDrgDoctorService;
 
 @RestController
-@RequestMapping("drm/drgDoctor")
+@RequestMapping("/drm/drgDoctor")
 public class DrgDoctorController extends BaseController {
     @Autowired
     private IDrgDoctorService drgdoctorService;

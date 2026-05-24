@@ -27,7 +27,7 @@ import com.ai58.drm.service.ICostAllocationService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/costAllocation")
+@RequestMapping("/drm/costAllocation")
 public class CostAllocationController extends BaseController
 {
     @Autowired

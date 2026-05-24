@@ -27,7 +27,7 @@ import com.ai58.drm.service.IDataMappingService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/dataMapping")
+@RequestMapping("/drm/dataMapping")
 public class DataMappingController extends BaseController
 {
     @Autowired

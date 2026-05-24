@@ -21,7 +21,7 @@ import com.ai58.drm.domain.DrgPerf;
 import com.ai58.drm.service.IDrgPerfService;
 
 @RestController
-@RequestMapping("drm/drgPerf")
+@RequestMapping("/drm/drgPerf")
 public class DrgPerfController extends BaseController {
     @Autowired
     private IDrgPerfService drgperfService;

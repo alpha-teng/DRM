@@ -21,7 +21,7 @@ import com.ai58.drm.domain.EfficiencyPerf;
 import com.ai58.drm.service.IEfficiencyPerfService;
 
 @RestController
-@RequestMapping("drm/efficiencyPerf")
+@RequestMapping("/drm/efficiencyPerf")
 public class EfficiencyPerfController extends BaseController {
     @Autowired
     private IEfficiencyPerfService efficiencyperfService;

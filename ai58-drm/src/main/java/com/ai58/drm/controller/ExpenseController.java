@@ -27,7 +27,7 @@ import com.ai58.drm.service.IExpenseService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/expense")
+@RequestMapping("/drm/expense")
 public class ExpenseController extends BaseController
 {
     @Autowired

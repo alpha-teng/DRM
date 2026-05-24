@@ -27,7 +27,7 @@ import com.ai58.drm.service.IEarlyWarningService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/earlyWarning")
+@RequestMapping("/drm/earlyWarning")
 public class EarlyWarningController extends BaseController
 {
     @Autowired

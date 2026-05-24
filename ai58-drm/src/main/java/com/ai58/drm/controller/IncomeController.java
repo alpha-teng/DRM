@@ -27,7 +27,7 @@ import com.ai58.drm.service.IIncomeService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/income")
+@RequestMapping("/drm/income")
 public class IncomeController extends BaseController
 {
     @Autowired

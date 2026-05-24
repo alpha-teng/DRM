@@ -17,7 +17,7 @@ import com.ai58.drm.service.IDeptCostService;
  * 科室成本Controller
  */
 @RestController
-@RequestMapping("drm/costData/deptCost")
+@RequestMapping("/drm/costData/deptCost")
 public class DeptCostController extends BaseController {
     @Autowired
     private IDeptCostService deptCostService;

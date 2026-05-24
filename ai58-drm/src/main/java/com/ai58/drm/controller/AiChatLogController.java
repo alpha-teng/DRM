@@ -27,7 +27,7 @@ import com.ai58.drm.service.IAiChatLogService;
  * @author ai58
  */
 @RestController
-@RequestMapping("drm/aiChatLog")
+@RequestMapping("/drm/aiChatLog")
 public class AiChatLogController extends BaseController
 {
     @Autowired

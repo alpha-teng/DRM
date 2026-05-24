@@ -8,9 +8,9 @@
             <div v-for="(msg, idx) in chatMessages" :key="idx" :class="['chat-msg', msg.role]">
               <div class="msg-avatar"><i :class="msg.role === 'user' ? 'el-icon-user' : 'el-icon-cpu'"></i></div>
               <div class="msg-content">
-                <div class="msg-role-label">{ msg.role === 'user' ? '我' : 'AI助手' }</div>
-                <div class="msg-bubble">{ msg.content }</div>
-                <div class="msg-time">{ msg.time }</div>
+                <div class="msg-role-label">{{ msg.role === 'user' ? '我' : 'AI助手' }}</div>
+                <div class="msg-bubble">{{ msg.content }}</div>
+                <div class="msg-time">{{ msg.time }}</div>
               </div>
             </div>
           </div>
@@ -24,7 +24,7 @@
       <el-col :span="6">
         <div class="quick-questions">
           <div class="quick-title"><i class="el-icon-question"></i> 快捷问题</div>
-          <el-button v-for="q in quickQuestions" :key="q" type="text" class="quick-btn" @click="askQuestion(q)">{ q }</el-button>
+          <el-button v-for="q in quickQuestions" :key="q" type="text" class="quick-btn" @click="askQuestion(q)">{{ q }}</el-button>
         </div>
       </el-col>
     </el-row>
